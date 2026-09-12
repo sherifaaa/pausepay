@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PausePay - Find & Cancel Forgotten Subscriptions</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<div class="max-w-4xl mx-auto p-6">
+  <div class="text-center py-10">
+    <h1 class="text-5xl font-extrabold text-indigo-600">PausePay</h1>
+    <p class="text-gray-500 text-lg mt-2">Find & cancel forgotten subscriptions in minutes</p>
+    <div class="inline-block mt-3 bg-green-100 text-green-800 font-bold px-5 py-2 rounded-full">Premium · $5/month</div>
+  </div>
+
+  <div id="savingsBanner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-6 text-center">
+    <p class="text-emerald-700 font-bold text-lg">You're spending</p>
+    <p class="text-4xl font-extrabold text-emerald-600" id="totalMonthly">$0.00</p>
+    <p class="text-emerald-600 text-sm mt-1">per month on <span id="subCount">0</span> subscriptions</p>
+  </div>
+
+  <div id="status" class="text-center text-gray-600 bg-white p-4 rounded-xl shadow mb-6">Connect your bank to start saving.</div>
+
+  <div class="flex flex-wrap gap-3 justify-center mb-8">
+    <button id="connectBtn" onclick="connectBank()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition">🔗 Connect Bank</button>
+    <button id="refreshBtn" onclick="refreshData()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition">🔄 Refresh</button>
+    <button id="upgradeBtn" onclick="upgrade()" class="hidden bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition">⭐ Upgrade to $5/mo</button>
+  </div>
+
+  <div id="results" class="hidden bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div class="bg-indigo-50 px-6 py-4 border-b"><h2 class="font-bold text-gray-800">Your Subscriptions</h2></div>
+    <ul id="list" class="divide-y divide-gray-100"></ul>
+  </div>
+
+  <p class="text-center text-gray-400 text-xs mt-10">🔒 Secured by Plaid. Your passwords are never shared.</p>
+</div>
+
+<script>
+let linkHandler = null;
+let subscriptions = [];
+
+async function connectBank() {
+  document.getElementById('status').innerText = 'Generating secure link...';
+  const res = await fetch('/api/create_link_token', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ userId: 'user-1' }) });
+  const data = await res.json();
+  const handler = Plaid.create({
+    token: data.link_token,
+    onSuccess: async (public_token) => {
+      await fetch('/api/exchange_token', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ public_token, userId: 'user-1' }) });
+      document.getElementById('status').innerText = '✅ Bank connected! Click Refresh.';
+      document.getElementById('refreshBtn').classList.remove('hidden');
+      document.getElementById('upgradeBtn').classList.remove('hidden');
+    },
+  });
+  handler.open();
+}
+
+async function refreshData() {
+  document.getElementById('status').innerText = 'Scanning 90 days of transactions...';
+  const res = await fetch('/api/transactions', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ userId: 'user-1' }) });
+  const data = await res.json();
+  if (data.error) { alert(data.error); return; }
+  subscriptions = data.subscriptions || [];
+  if (subscriptions.length === 0) { document.getElementById('status').innerText = '🎉 No subscriptions found!'; return; }
+
+  document.getElementById('totalMonthly').innerText = '$' + data.total_monthly.toFixed(2);
+  document.getElementById('subCount').innerText = subscriptions.length;
+  document.getElementById('savingsBanner').classList.remove('hidden');
+  document.getElementById('results').classList.remove('hidden');
+
+  let html = '';
+  subscriptions.forEach(sub => {
+    html += `<li class="px-6 py-4 flex justify-between items-center hover:bg-gray-50">
+      <div><p class="font-bold text-gray-800">${sub.merchant}</p><p class="text-sm text-gray-500">$${sub.amount.toFixed(2)}/mo · Last: ${sub.last_charged}</p></div>
+      <button onclick="alert('${sub.cancel_instructions}')" class="bg-red-100 hover:bg-red-200 text-red-700 font-semibold px-5 py-2 rounded-full text-sm">Cancel</button>
+    </li>`;
+  });
+  document.getElementById('list').innerHTML = html;
+  document.getElementById('status').innerText = `Found ${subscriptions.length} subscriptions!`;
+}
+
+async function upgrade() {
+  const res = await fetch('/api/create-checkout-session', { method: 'POST' });
+  const data = await res.json();
+  if (data.url) window.location.href = data.url;
+}
+</script>
+</body>
+</html>
