@@ -3,89 +3,299 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PausePay - Find & Cancel Forgotten Subscriptions</title>
+<title>PausePay - Find, Cancel & Save on Subscriptions</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 </head>
 <body class="bg-gray-50 min-h-screen">
 
-<div class="max-w-4xl mx-auto p-6">
-  <div class="text-center py-10">
+<div class="max-w-5xl mx-auto p-6">
+  <!-- HEADER -->
+  <div class="text-center py-8">
     <h1 class="text-5xl font-extrabold text-indigo-600">PausePay</h1>
-    <p class="text-gray-500 text-lg mt-2">Find & cancel forgotten subscriptions in minutes</p>
+    <p class="text-gray-500 text-lg mt-2">Find, cancel, and save on forgotten subscriptions</p>
     <div class="inline-block mt-3 bg-green-100 text-green-800 font-bold px-5 py-2 rounded-full">Premium · $5/month</div>
   </div>
 
+  <!-- STATUS -->
+  <div id="status" class="text-center text-gray-600 bg-white p-4 rounded-xl shadow mb-6">Connect your bank to start saving.</div>
+
+  <!-- BUTTONS -->
+  <div class="flex flex-wrap gap-3 justify-center mb-6">
+    <button onclick="connectBank()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition">🔗 Connect Bank</button>
+    <button id="refreshBtn" onclick="refreshData()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition">🔄 Refresh</button>
+    <button id="upgradeBtn" onclick="upgrade()" class="hidden bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition">⭐ Upgrade $5/mo</button>
+  </div>
+
+  <!-- TAB NAVIGATION -->
+  <div id="tabs" class="hidden flex flex-wrap gap-2 justify-center mb-6">
+    <button onclick="showTab('subscriptions')" class="tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold" data-tab="subscriptions">📋 Subscriptions</button>
+    <button onclick="showTab('analytics')" class="tab-btn bg-gray-200 text-gray-700 px-5 py-2 rounded-full font-semibold" data-tab="analytics">📊 Analytics</button>
+    <button onclick="showTab('disputes')" class="tab-btn bg-gray-200 text-gray-700 px-5 py-2 rounded-full font-semibold" data-tab="disputes">⚠️ Disputes</button>
+    <button onclick="showTab('offers')" class="tab-btn bg-gray-200 text-gray-700 px-5 py-2 rounded-full font-semibold" data-tab="offers">🎁 Offers</button>
+    <button onclick="showTab('negotiate')" class="tab-btn bg-gray-200 text-gray-700 px-5 py-2 rounded-full font-semibold" data-tab="negotiate">💰 Negotiate Bills</button>
+  </div>
+
+  <!-- SAVINGS BANNER -->
   <div id="savingsBanner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-6 text-center">
     <p class="text-emerald-700 font-bold text-lg">You're spending</p>
     <p class="text-4xl font-extrabold text-emerald-600" id="totalMonthly">$0.00</p>
     <p class="text-emerald-600 text-sm mt-1">per month on <span id="subCount">0</span> subscriptions</p>
   </div>
 
-  <div id="status" class="text-center text-gray-600 bg-white p-4 rounded-xl shadow mb-6">Connect your bank to start saving.</div>
-
-  <div class="flex flex-wrap gap-3 justify-center mb-8">
-    <button id="connectBtn" onclick="connectBank()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition">🔗 Connect Bank</button>
-    <button id="refreshBtn" onclick="refreshData()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition">🔄 Refresh</button>
-    <button id="upgradeBtn" onclick="upgrade()" class="hidden bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition">⭐ Upgrade to $5/mo</button>
+  <!-- TAB: SUBSCRIPTIONS -->
+  <div id="tab-subscriptions" class="tab-content">
+    <div id="results" class="hidden bg-white rounded-2xl shadow-xl overflow-hidden">
+      <div class="bg-indigo-50 px-6 py-4 border-b"><h2 class="font-bold text-gray-800">Your Subscriptions</h2></div>
+      <ul id="list" class="divide-y divide-gray-100"></ul>
+    </div>
   </div>
 
-  <div id="results" class="hidden bg-white rounded-2xl shadow-xl overflow-hidden">
-    <div class="bg-indigo-50 px-6 py-4 border-b"><h2 class="font-bold text-gray-800">Your Subscriptions</h2></div>
-    <ul id="list" class="divide-y divide-gray-100"></ul>
+  <!-- TAB: ANALYTICS -->
+  <div id="tab-analytics" class="tab-content hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-6">
+      <h2 class="font-bold text-gray-800 text-xl mb-4">📊 Spending Analytics</h2>
+      <div id="analyticsContent" class="text-gray-600">Connect your bank to see analytics.</div>
+    </div>
+  </div>
+
+  <!-- TAB: DISPUTES -->
+  <div id="tab-disputes" class="tab-content hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-6">
+      <h2 class="font-bold text-gray-800 text-xl mb-4">⚠️ Dispute a Charge</h2>
+      <div class="space-y-4">
+        <input id="disputeMerchant" placeholder="Merchant name (e.g., Netflix)" class="w-full border border-gray-300 rounded-xl p-3">
+        <input id="disputeAmount" type="number" placeholder="Amount ($)" class="w-full border border-gray-300 rounded-xl p-3">
+        <select id="disputeReason" class="w-full border border-gray-300 rounded-xl p-3">
+          <option>I cancelled but was still charged</option>
+          <option>I never authorized this charge</option>
+          <option>The amount is incorrect</option>
+          <option>I don't recognize this charge</option>
+        </select>
+        <button onclick="submitDispute()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl w-full">Submit Dispute</button>
+      </div>
+      <div id="disputeList" class="mt-6"></div>
+    </div>
+  </div>
+
+  <!-- TAB: OFFERS -->
+  <div id="tab-offers" class="tab-content hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-6">
+      <h2 class="font-bold text-gray-800 text-xl mb-4">🎁 Exclusive Offers</h2>
+      <div id="offersList" class="space-y-3"></div>
+    </div>
+  </div>
+
+  <!-- TAB: NEGOTIATE -->
+  <div id="tab-negotiate" class="tab-content hidden">
+    <div class="bg-white rounded-2xl shadow-xl p-6">
+      <h2 class="font-bold text-gray-800 text-xl mb-4">💰 Negotiate Your Bills</h2>
+      <p class="text-gray-600 mb-4">We'll negotiate your internet, phone, or cable bill. You only pay if we save you money.</p>
+      <div class="space-y-4">
+        <select id="billType" class="w-full border border-gray-300 rounded-xl p-3">
+          <option>Internet</option>
+          <option>Phone</option>
+          <option>Cable TV</option>
+          <option>Home Security</option>
+        </select>
+        <input id="billProvider" placeholder="Provider (e.g., Comcast)" class="w-full border border-gray-300 rounded-xl p-3">
+        <input id="billAmount" type="number" placeholder="Current monthly bill ($)" class="w-full border border-gray-300 rounded-xl p-3">
+        <button onclick="submitNegotiation()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl w-full">Request Negotiation</button>
+      </div>
+      <div id="negotiationResult" class="mt-4"></div>
+    </div>
   </div>
 
   <p class="text-center text-gray-400 text-xs mt-10">🔒 Secured by Plaid. Your passwords are never shared.</p>
 </div>
 
 <script>
-let linkHandler = null;
 let subscriptions = [];
+let connected = false;
 
+// ============ PLAID CONNECT ============
 async function connectBank() {
   document.getElementById('status').innerText = 'Generating secure link...';
-  const res = await fetch('/api/create_link_token', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ userId: 'user-1' }) });
-  const data = await res.json();
-  const handler = Plaid.create({
-    token: data.link_token,
-    onSuccess: async (public_token) => {
-      await fetch('/api/exchange_token', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ public_token, userId: 'user-1' }) });
-      document.getElementById('status').innerText = '✅ Bank connected! Click Refresh.';
-      document.getElementById('refreshBtn').classList.remove('hidden');
-      document.getElementById('upgradeBtn').classList.remove('hidden');
-    },
-  });
-  handler.open();
+  try {
+    const res = await fetch('/api/create_link_token', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: 'user-1' })
+    });
+    const data = await res.json();
+    const handler = Plaid.create({
+      token: data.link_token,
+      onSuccess: async (public_token) => {
+        await fetch('/api/exchange_token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ public_token, userId: 'user-1' })
+        });
+        connected = true;
+        document.getElementById('status').innerText = '✅ Bank connected! Loading your data...';
+        document.getElementById('refreshBtn').classList.remove('hidden');
+        document.getElementById('upgradeBtn').classList.remove('hidden');
+        document.getElementById('tabs').classList.remove('hidden');
+        await refreshData();
+        await loadOffers();
+      },
+    });
+    handler.open();
+  } catch (e) {
+    document.getElementById('status').innerText = '❌ Connection failed. Try again.';
+    console.error(e);
+  }
 }
 
+// ============ REFRESH DATA ============
 async function refreshData() {
   document.getElementById('status').innerText = 'Scanning 90 days of transactions...';
-  const res = await fetch('/api/transactions', { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({ userId: 'user-1' }) });
+  const res = await fetch('/api/transactions', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userId: 'user-1' })
+  });
   const data = await res.json();
   if (data.error) { alert(data.error); return; }
-  subscriptions = data.subscriptions || [];
-  if (subscriptions.length === 0) { document.getElementById('status').innerText = '🎉 No subscriptions found!'; return; }
 
-  document.getElementById('totalMonthly').innerText = '$' + data.total_monthly.toFixed(2);
+  subscriptions = data.subscriptions || [];
+  document.getElementById('totalMonthly').innerText = '$' + (data.total_monthly || 0).toFixed(2);
   document.getElementById('subCount').innerText = subscriptions.length;
   document.getElementById('savingsBanner').classList.remove('hidden');
   document.getElementById('results').classList.remove('hidden');
 
   let html = '';
   subscriptions.forEach(sub => {
-    html += `<li class="px-6 py-4 flex justify-between items-center hover:bg-gray-50">
-      <div><p class="font-bold text-gray-800">${sub.merchant}</p><p class="text-sm text-gray-500">$${sub.amount.toFixed(2)}/mo · Last: ${sub.last_charged}</p></div>
-      <button onclick="alert('${sub.cancel_instructions}')" class="bg-red-100 hover:bg-red-200 text-red-700 font-semibold px-5 py-2 rounded-full text-sm">Cancel</button>
+    html += `<li class="px-6 py-4 flex flex-wrap justify-between items-center gap-3 hover:bg-gray-50">
+      <div class="flex-1 min-w-[200px]">
+        <p class="font-bold text-gray-800">${sub.merchant}</p>
+        <p class="text-sm text-gray-500">$${sub.amount.toFixed(2)}/mo · Last: ${sub.last_charged} · ${sub.category}</p>
+      </div>
+      <div class="flex gap-2">
+        <button onclick="pauseSubscription('${sub.merchant}')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 font-semibold px-4 py-2 rounded-full text-sm">⏸ Pause</button>
+        <button onclick="alert('${sub.cancel_instructions}')" class="bg-red-100 hover:bg-red-200 text-red-700 font-semibold px-4 py-2 rounded-full text-sm">✕ Cancel</button>
+      </div>
     </li>`;
   });
   document.getElementById('list').innerHTML = html;
   document.getElementById('status').innerText = `Found ${subscriptions.length} subscriptions!`;
+
+  // Analytics
+  if (data.categories && Object.keys(data.categories).length > 0) {
+    let ahtml = '<div class="grid grid-cols-2 md:grid-cols-3 gap-3">';
+    Object.keys(data.categories).forEach(cat => {
+      ahtml += `<div class="bg-indigo-50 p-4 rounded-xl">
+        <p class="font-bold text-indigo-700 text-sm">${cat}</p>
+        <p class="text-2xl font-extrabold text-indigo-600">$${data.categories[cat].toFixed(2)}</p>
+      </div>`;
+    });
+    ahtml += '</div>';
+    document.getElementById('analyticsContent').innerHTML = ahtml;
+  }
 }
 
+// ============ PAUSE ============
+async function pauseSubscription(merchant) {
+  await fetch('/api/toggle-pause', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ subscriptionId: merchant, action: 'pause' })
+  });
+  alert(`⏸ ${merchant} paused. We'll notify you when it resumes.`);
+}
+
+// ============ DISPUTES ============
+async function submitDispute() {
+  const merchant = document.getElementById('disputeMerchant').value.trim();
+  const amount = document.getElementById('disputeAmount').value;
+  const reason = document.getElementById('disputeReason').value;
+  if (!merchant || !amount) { alert('Please fill in merchant and amount.'); return; }
+
+  const res = await fetch('/api/create-dispute', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ merchant, amount: parseFloat(amount), reason, userId: 'user-1' })
+  });
+  const data = await res.json();
+  if (data.success) {
+    document.getElementById('disputeList').innerHTML = `
+      <div class="bg-red-50 border border-red-200 rounded-xl p-4">
+        <p class="font-bold text-red-700">✅ Dispute submitted for ${merchant}</p>
+        <p class="text-sm text-red-600">We'll contact the merchant and update you within 48 hours.</p>
+      </div>`;
+    document.getElementById('disputeMerchant').value = '';
+    document.getElementById('disputeAmount').value = '';
+  }
+}
+
+// ============ OFFERS ============
+async function loadOffers() {
+  const res = await fetch('/api/offers');
+  const data = await res.json();
+  let html = '';
+  data.offers.forEach(offer => {
+    html += `<div class="border border-gray-200 rounded-xl p-4 flex flex-wrap justify-between items-center gap-3">
+      <div class="flex-1 min-w-[200px]">
+        <p class="font-bold text-gray-800">${offer.merchant} — ${offer.title}</p>
+        <p class="text-sm text-gray-500">${offer.description}</p>
+      </div>
+      <button onclick="acceptOffer(${offer.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded-full text-sm">Claim</button>
+    </div>`;
+  });
+  document.getElementById('offersList').innerHTML = html;
+}
+
+async function acceptOffer(offerId) {
+  const res = await fetch('/api/accept-offer', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ offerId, userId: 'user-1' })
+  });
+  const data = await res.json();
+  alert(`🎁 ${data.message}`);
+}
+
+// ============ NEGOTIATE ============
+async function submitNegotiation() {
+  const billType = document.getElementById('billType').value;
+  const provider = document.getElementById('billProvider').value.trim();
+  const currentAmount = document.getElementById('billAmount').value;
+  if (!provider || !currentAmount) { alert('Please fill in provider and amount.'); return; }
+
+  const res = await fetch('/api/negotiate-bill', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ billType, provider, currentAmount: parseFloat(currentAmount), userId: 'user-1' })
+  });
+  const data = await res.json();
+  if (data.success) {
+    document.getElementById('negotiationResult').innerHTML = `
+      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+        <p class="font-bold text-emerald-700">${data.message}</p>
+        <p class="text-sm text-emerald-600">Estimated savings: $${data.estimatedSavings}/month</p>
+      </div>`;
+  }
+}
+
+// ============ UPGRADE ============
 async function upgrade() {
   const res = await fetch('/api/create-checkout-session', { method: 'POST' });
   const data = await res.json();
   if (data.url) window.location.href = data.url;
+  else alert('Stripe is not configured yet. Coming soon!');
+}
+
+// ============ TABS ============
+function showTab(tabName) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+  document.getElementById('tab-' + tabName).classList.remove('hidden');
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    if (btn.dataset.tab === tabName) {
+      btn.className = 'tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold';
+    } else {
+      btn.className = 'tab-btn bg-gray-200 text-gray-700 px-5 py-2 rounded-full font-semibold';
+    }
+  });
 }
 </script>
 </body>
