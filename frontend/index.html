@@ -3,117 +3,458 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PausePay - Find, Cancel & Save on Subscriptions</title>
+<title>PausePay — Find, Cancel & Save on Forgotten Subscriptions</title>
+<meta name="description" content="PausePay helps you find, cancel, and negotiate subscriptions you forgot about. Save an average of $512 per year. Free to start.">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+  .gradient-hero { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+</style>
 </head>
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-white text-slate-800">
 
-<div class="max-w-5xl mx-auto p-6">
-  <!-- HEADER -->
-  <div class="text-center py-8">
-    <h1 class="text-5xl font-extrabold text-indigo-600">PausePay</h1>
-    <p class="text-gray-500 text-lg mt-2">Find, cancel, and save on forgotten subscriptions</p>
-    <div class="inline-block mt-3 bg-green-100 text-green-800 font-bold px-5 py-2 rounded-full">Premium · $5/month</div>
-  </div>
-
-  <!-- STATUS -->
-  <div id="status" class="text-center text-gray-600 bg-white p-4 rounded-xl shadow mb-6">Connect your bank to start saving.</div>
-
-  <!-- BUTTONS -->
-  <div class="flex flex-wrap gap-3 justify-center mb-6">
-    <button onclick="connectBank()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition">🔗 Connect Bank</button>
-    <button id="refreshBtn" onclick="refreshData()" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition">🔄 Refresh</button>
-    <button id="upgradeBtn" onclick="upgrade()" class="hidden bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition">⭐ Upgrade $5/mo</button>
-  </div>
-
-  <!-- TAB NAVIGATION -->
-  <div id="tabs" class="hidden flex flex-wrap gap-2 justify-center mb-6">
-    <button onclick="showTab('subscriptions')" class="tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold" data-tab="subscriptions">📋 Subscriptions</button>
-    <button onclick="showTab('analytics')" class="tab-btn bg-gray-200 text-gray-700 px-5 py-2 rounded-full font-semibold" data-tab="analytics">📊 Analytics</button>
-    <button onclick="showTab('disputes')" class="tab-btn bg-gray-200 text-gray-700 px-5 py-2 rounded-full font-semibold" data-tab="disputes">⚠️ Disputes</button>
-    <button onclick="showTab('offers')" class="tab-btn bg-gray-200 text-gray-700 px-5 py-2 rounded-full font-semibold" data-tab="offers">🎁 Offers</button>
-    <button onclick="showTab('negotiate')" class="tab-btn bg-gray-200 text-gray-700 px-5 py-2 rounded-full font-semibold" data-tab="negotiate">💰 Negotiate Bills</button>
-  </div>
-
-  <!-- SAVINGS BANNER -->
-  <div id="savingsBanner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-6 text-center">
-    <p class="text-emerald-700 font-bold text-lg">You're spending</p>
-    <p class="text-4xl font-extrabold text-emerald-600" id="totalMonthly">$0.00</p>
-    <p class="text-emerald-600 text-sm mt-1">per month on <span id="subCount">0</span> subscriptions</p>
-  </div>
-
-  <!-- TAB: SUBSCRIPTIONS -->
-  <div id="tab-subscriptions" class="tab-content">
-    <div id="results" class="hidden bg-white rounded-2xl shadow-xl overflow-hidden">
-      <div class="bg-indigo-50 px-6 py-4 border-b"><h2 class="font-bold text-gray-800">Your Subscriptions</h2></div>
-      <ul id="list" class="divide-y divide-gray-100"></ul>
-    </div>
-  </div>
-
-  <!-- TAB: ANALYTICS -->
-  <div id="tab-analytics" class="tab-content hidden">
-    <div class="bg-white rounded-2xl shadow-xl p-6">
-      <h2 class="font-bold text-gray-800 text-xl mb-4">📊 Spending Analytics</h2>
-      <div id="analyticsContent" class="text-gray-600">Connect your bank to see analytics.</div>
-    </div>
-  </div>
-
-  <!-- TAB: DISPUTES -->
-  <div id="tab-disputes" class="tab-content hidden">
-    <div class="bg-white rounded-2xl shadow-xl p-6">
-      <h2 class="font-bold text-gray-800 text-xl mb-4">⚠️ Dispute a Charge</h2>
-      <div class="space-y-4">
-        <input id="disputeMerchant" placeholder="Merchant name (e.g., Netflix)" class="w-full border border-gray-300 rounded-xl p-3">
-        <input id="disputeAmount" type="number" placeholder="Amount ($)" class="w-full border border-gray-300 rounded-xl p-3">
-        <select id="disputeReason" class="w-full border border-gray-300 rounded-xl p-3">
-          <option>I cancelled but was still charged</option>
-          <option>I never authorized this charge</option>
-          <option>The amount is incorrect</option>
-          <option>I don't recognize this charge</option>
-        </select>
-        <button onclick="submitDispute()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl w-full">Submit Dispute</button>
+<!-- NAVIGATION -->
+<nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="flex items-center gap-2">
+      <div class="w-9 h-9 bg-indigo-600 rounded-lg flex items-center justify-center">
+        <span class="text-white font-bold text-lg">P</span>
       </div>
-      <div id="disputeList" class="mt-6"></div>
+      <span class="font-bold text-xl text-slate-900">PausePay</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+      <a href="#how" class="hover:text-indigo-600 transition">How It Works</a>
+      <a href="#features" class="hover:text-indigo-600 transition">Features</a>
+      <a href="#pricing" class="hover:text-indigo-600 transition">Pricing</a>
+      <a href="#faq" class="hover:text-indigo-600 transition">FAQ</a>
     </div>
+    <button onclick="scrollToApp()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition shadow-sm">
+      Get Started Free
+    </button>
   </div>
+</nav>
 
-  <!-- TAB: OFFERS -->
-  <div id="tab-offers" class="tab-content hidden">
-    <div class="bg-white rounded-2xl shadow-xl p-6">
-      <h2 class="font-bold text-gray-800 text-xl mb-4">🎁 Exclusive Offers</h2>
-      <div id="offersList" class="space-y-3"></div>
-    </div>
-  </div>
-
-  <!-- TAB: NEGOTIATE -->
-  <div id="tab-negotiate" class="tab-content hidden">
-    <div class="bg-white rounded-2xl shadow-xl p-6">
-      <h2 class="font-bold text-gray-800 text-xl mb-4">💰 Negotiate Your Bills</h2>
-      <p class="text-gray-600 mb-4">We'll negotiate your internet, phone, or cable bill. You only pay if we save you money.</p>
-      <div class="space-y-4">
-        <select id="billType" class="w-full border border-gray-300 rounded-xl p-3">
-          <option>Internet</option>
-          <option>Phone</option>
-          <option>Cable TV</option>
-          <option>Home Security</option>
-        </select>
-        <input id="billProvider" placeholder="Provider (e.g., Comcast)" class="w-full border border-gray-300 rounded-xl p-3">
-        <input id="billAmount" type="number" placeholder="Current monthly bill ($)" class="w-full border border-gray-300 rounded-xl p-3">
-        <button onclick="submitNegotiation()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl w-full">Request Negotiation</button>
+<!-- HERO -->
+<section class="gradient-hero text-white">
+  <div class="max-w-7xl mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
+        <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
+        Trusted by 10,000+ Americans
       </div>
-      <div id="negotiationResult" class="mt-4"></div>
+      <h1 class="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight mb-6">
+        Stop paying for subscriptions you forgot about.
+      </h1>
+      <p class="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
+        The average American wastes <strong class="text-white">$512 per year</strong> on forgotten subscriptions. PausePay finds them, cancels them, and even negotiates your bills — all in one place.
+      </p>
+      <div class="flex flex-wrap gap-4">
+        <button onclick="scrollToApp()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-4 rounded-xl transition shadow-lg">
+          Find My Subscriptions →
+        </button>
+        <a href="#how" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-xl transition">
+          See How It Works
+        </a>
+      </div>
+      <div class="mt-8 flex items-center gap-6 text-sm text-slate-400">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          No credit card required
+        </div>
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          Bank-level encryption
+        </div>
+      </div>
+    </div>
+    <div class="hidden md:block">
+      <div class="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-2xl">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-sm font-medium text-slate-300">Your monthly subscriptions</span>
+          <span class="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full font-semibold">Live</span>
+        </div>
+        <div class="text-4xl font-extrabold text-white mb-6">$187.43<span class="text-lg text-slate-400 font-medium">/mo</span></div>
+        <div class="space-y-3">
+          <div class="flex items-center justify-between bg-white/5 rounded-lg px-4 py-3">
+            <span class="text-sm text-slate-300">Netflix</span>
+            <span class="text-sm font-semibold text-white">$15.99</span>
+          </div>
+          <div class="flex items-center justify-between bg-white/5 rounded-lg px-4 py-3">
+            <span class="text-sm text-slate-300">Spotify</span>
+            <span class="text-sm font-semibold text-white">$9.99</span>
+          </div>
+          <div class="flex items-center justify-between bg-white/5 rounded-lg px-4 py-3">
+            <span class="text-sm text-slate-300">Adobe Creative Cloud</span>
+            <span class="text-sm font-semibold text-white">$54.99</span>
+          </div>
+          <div class="flex items-center justify-between bg-indigo-500/20 border border-indigo-400/30 rounded-lg px-4 py-3">
+            <span class="text-sm text-indigo-200">+ 4 more forgotten</span>
+            <span class="text-sm font-semibold text-indigo-300">Cancel →</span>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
+</section>
 
-  <p class="text-center text-gray-400 text-xs mt-10">🔒 Secured by Plaid. Your passwords are never shared.</p>
-</div>
+<!-- TRUST BAR -->
+<section class="bg-slate-50 border-b border-slate-200">
+  <div class="max-w-7xl mx-auto px-6 py-8">
+    <p class="text-center text-sm font-medium text-slate-500 mb-6">BANK-LEVEL SECURITY. TRUSTED INFRASTRUCTURE.</p>
+    <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 text-slate-400">
+      <div class="flex items-center gap-2 font-semibold text-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        Plaid
+      </div>
+      <div class="flex items-center gap-2 font-semibold text-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+        256-bit Encryption
+      </div>
+      <div class="flex items-center gap-2 font-semibold text-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+        GDPR Compliant
+      </div>
+      <div class="flex items-center gap-2 font-semibold text-lg">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        Read-Only Access
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section id="how" class="py-20 md:py-28 bg-white">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">How PausePay works</h2>
+      <p class="text-lg text-slate-600 max-w-2xl mx-auto">Three steps. Two minutes. Hundreds of dollars saved.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="text-center">
+        <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <span class="text-3xl font-bold text-indigo-600">1</span>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 mb-3">Connect your bank</h3>
+        <p class="text-slate-600 leading-relaxed">Securely link your bank account in seconds using Plaid — the same technology trusted by Venmo, Robinhood, and Coinbase.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <span class="text-3xl font-bold text-indigo-600">2</span>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 mb-3">We find everything</h3>
+        <p class="text-slate-600 leading-relaxed">Our algorithm scans 90 days of transactions to identify every recurring charge — even the ones you forgot existed.</p>
+      </div>
+      <div class="text-center">
+        <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+          <span class="text-3xl font-bold text-indigo-600">3</span>
+        </div>
+        <h3 class="text-xl font-bold text-slate-900 mb-3">Cancel and save</h3>
+        <p class="text-slate-600 leading-relaxed">One-click cancel instructions, auto-cancellation, and bill negotiation. You save money. We only win when you do.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="py-20 md:py-28 bg-slate-50">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Everything you need to take control</h2>
+      <p class="text-lg text-slate-600 max-w-2xl mx-auto">Five powerful tools in one simple app.</p>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
+        <div class="text-3xl mb-4">🔍</div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Subscription Tracking</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">See every recurring charge in one dashboard, sorted by amount and category.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
+        <div class="text-3xl mb-4">✕</div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">One-Click Cancel</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">Step-by-step cancellation instructions for 500+ services, and auto-cancel for the top 50.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
+        <div class="text-3xl mb-4">⚠️</div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Dispute Management</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">Charged for something you cancelled? File a dispute and we handle the merchant for you.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
+        <div class="text-3xl mb-4">💰</div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Bill Negotiation</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">We negotiate your internet, phone, and cable bills. You only pay a percentage of what we save you.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
+        <div class="text-3xl mb-4">🎁</div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Merchant Offers</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">Exclusive discounts from merchants — before you cancel, check if there's a better deal.</p>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
+        <div class="text-3xl mb-4">📊</div>
+        <h3 class="text-lg font-bold text-slate-900 mb-2">Spending Analytics</h3>
+        <p class="text-slate-600 text-sm leading-relaxed">Understand where your money goes with category breakdowns and monthly trends.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APP SECTION -->
+<section id="app" class="py-20 md:py-28 bg-white">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Try it now — it's free</h2>
+      <p class="text-lg text-slate-600">Connect your bank and see your subscriptions in 60 seconds.</p>
+    </div>
+
+    <!-- STATUS -->
+    <div id="status" class="text-center text-slate-600 bg-slate-50 border border-slate-200 p-4 rounded-xl mb-6">
+      Click "Connect Bank" to start. We'll never see your password.
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="flex flex-wrap gap-3 justify-center mb-8">
+      <button onclick="connectBank()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition">
+        🔗 Connect Bank
+      </button>
+      <button id="refreshBtn" onclick="refreshData()" class="hidden bg-slate-800 hover:bg-slate-900 text-white font-bold py-3 px-6 rounded-xl shadow transition">
+        🔄 Refresh
+      </button>
+      <button id="upgradeBtn" onclick="upgrade()" class="hidden bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow transition">
+        ⭐ Upgrade to Premium
+      </button>
+    </div>
+
+    <!-- TABS -->
+    <div id="tabs" class="hidden flex flex-wrap gap-2 justify-center mb-6">
+      <button onclick="showTab('subscriptions')" class="tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm" data-tab="subscriptions">📋 Subscriptions</button>
+      <button onclick="showTab('analytics')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="analytics">📊 Analytics</button>
+      <button onclick="showTab('disputes')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="disputes">⚠️ Disputes</button>
+      <button onclick="showTab('offers')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="offers">🎁 Offers</button>
+      <button onclick="showTab('negotiate')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="negotiate">💰 Negotiate</button>
+    </div>
+
+    <!-- SAVINGS BANNER -->
+    <div id="savingsBanner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-6 text-center">
+      <p class="text-emerald-700 font-semibold text-sm">YOU'RE SPENDING</p>
+      <p class="text-4xl font-extrabold text-emerald-600 my-1" id="totalMonthly">$0.00</p>
+      <p class="text-emerald-600 text-sm">per month on <span id="subCount">0</span> subscriptions</p>
+    </div>
+
+    <!-- TAB: SUBSCRIPTIONS -->
+    <div id="tab-subscriptions" class="tab-content">
+      <div id="results" class="hidden bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
+          <h2 class="font-bold text-slate-800">Your Subscriptions</h2>
+        </div>
+        <ul id="list" class="divide-y divide-slate-100"></ul>
+      </div>
+    </div>
+
+    <!-- TAB: ANALYTICS -->
+    <div id="tab-analytics" class="tab-content hidden">
+      <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
+        <h2 class="font-bold text-slate-800 text-xl mb-4">📊 Spending Analytics</h2>
+        <div id="analyticsContent" class="text-slate-600">Connect your bank to see analytics.</div>
+      </div>
+    </div>
+
+    <!-- TAB: DISPUTES -->
+    <div id="tab-disputes" class="tab-content hidden">
+      <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
+        <h2 class="font-bold text-slate-800 text-xl mb-4">⚠️ Dispute a Charge</h2>
+        <p class="text-slate-600 text-sm mb-4">Charged for something you cancelled? File a dispute and we'll contact the merchant on your behalf.</p>
+        <div class="space-y-4">
+          <input id="disputeMerchant" placeholder="Merchant name (e.g., Netflix)" class="w-full border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none">
+          <input id="disputeAmount" type="number" placeholder="Amount ($)" class="w-full border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none">
+          <select id="disputeReason" class="w-full border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none">
+            <option>I cancelled but was still charged</option>
+            <option>I never authorized this charge</option>
+            <option>The amount is incorrect</option>
+            <option>I don't recognize this charge</option>
+          </select>
+          <button onclick="submitDispute()" class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-xl w-full transition">Submit Dispute</button>
+        </div>
+        <div id="disputeList" class="mt-6"></div>
+      </div>
+    </div>
+
+    <!-- TAB: OFFERS -->
+    <div id="tab-offers" class="tab-content hidden">
+      <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
+        <h2 class="font-bold text-slate-800 text-xl mb-4">🎁 Exclusive Offers</h2>
+        <p class="text-slate-600 text-sm mb-4">Before you cancel, check if there's a better deal available.</p>
+        <div id="offersList" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- TAB: NEGOTIATE -->
+    <div id="tab-negotiate" class="tab-content hidden">
+      <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
+        <h2 class="font-bold text-slate-800 text-xl mb-4">💰 Negotiate Your Bills</h2>
+        <p class="text-slate-600 text-sm mb-4">We'll negotiate your internet, phone, or cable bill. You only pay a percentage of what we save you.</p>
+        <div class="space-y-4">
+          <select id="billType" class="w-full border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none">
+            <option>Internet</option>
+            <option>Phone</option>
+            <option>Cable TV</option>
+            <option>Home Security</option>
+          </select>
+          <input id="billProvider" placeholder="Provider (e.g., Comcast)" class="w-full border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none">
+          <input id="billAmount" type="number" placeholder="Current monthly bill ($)" class="w-full border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none">
+          <button onclick="submitNegotiation()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl w-full transition">Request Negotiation</button>
+        </div>
+        <div id="negotiationResult" class="mt-4"></div>
+      </div>
+    </div>
+
+    <p class="text-center text-slate-400 text-xs mt-8 flex items-center justify-center gap-2">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+      Secured by Plaid. Read-only access. We never see your password.
+    </p>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="py-20 md:py-28 bg-slate-50">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Simple, honest pricing</h2>
+      <p class="text-lg text-slate-600">Start free. Upgrade when you're ready.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+      <div class="bg-white rounded-2xl p-8 border-2 border-slate-200">
+        <h3 class="text-2xl font-bold text-slate-900 mb-2">Free</h3>
+        <p class="text-slate-600 mb-6">Everything you need to get started</p>
+        <div class="text-5xl font-extrabold text-slate-900 mb-6">$0<span class="text-lg text-slate-500 font-medium">/mo</span></div>
+        <ul class="space-y-3 mb-8 text-slate-700">
+          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Track up to 5 subscriptions</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Cancel instructions</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Spending analytics</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Dispute filing</li>
+        </ul>
+        <button onclick="scrollToApp()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition">Get Started Free</button>
+      </div>
+      <div class="bg-slate-900 rounded-2xl p-8 border-2 border-indigo-600 relative">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-bold px-4 py-1 rounded-full">MOST POPULAR</div>
+        <h3 class="text-2xl font-bold text-white mb-2">Premium</h3>
+        <p class="text-slate-400 mb-6">For people serious about saving</p>
+        <div class="text-5xl font-extrabold text-white mb-6">$5<span class="text-lg text-slate-400 font-medium">/mo</span></div>
+        <ul class="space-y-3 mb-8 text-slate-200">
+          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Unlimited subscriptions</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Auto-cancellation</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Bill negotiation</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Merchant offers</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Priority support</li>
+        </ul>
+        <button onclick="upgrade()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition">Upgrade to Premium</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-20 md:py-28 bg-white">
+  <div class="max-w-3xl mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Frequently asked questions</h2>
+    </div>
+    <div class="space-y-4">
+      <details class="bg-slate-50 rounded-xl p-6 border border-slate-200 cursor-pointer group">
+        <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
+          Is PausePay safe to use?
+          <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+        </summary>
+        <p class="text-slate-600 mt-4 leading-relaxed">Yes. PausePay uses Plaid, the same technology trusted by Venmo, Robinhood, and Coinbase. We never see or store your bank password — Plaid provides read-only access to your transaction data.</p>
+      </details>
+      <details class="bg-slate-50 rounded-xl p-6 border border-slate-200 cursor-pointer group">
+        <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
+          Can PausePay access my money?
+          <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+        </summary>
+        <p class="text-slate-600 mt-4 leading-relaxed">No. We have read-only access. We can see your transactions, but we cannot move, withdraw, or transfer any funds.</p>
+      </details>
+      <details class="bg-slate-50 rounded-xl p-6 border border-slate-200 cursor-pointer group">
+        <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
+          How much can I save?
+          <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+        </summary>
+        <p class="text-slate-600 mt-4 leading-relaxed">The average American wastes $512 per year on forgotten subscriptions. Many PausePay users save $200+ per year within their first month.</p>
+      </details>
+      <details class="bg-slate-50 rounded-xl p-6 border border-slate-200 cursor-pointer group">
+        <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
+          Can I cancel anytime?
+          <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+        </summary>
+        <p class="text-slate-600 mt-4 leading-relaxed">Yes. You can cancel your PausePay subscription at any time with one click. No hidden fees, no contracts, no hassle.</p>
+      </details>
+      <details class="bg-slate-50 rounded-xl p-6 border border-slate-200 cursor-pointer group">
+        <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
+          Which countries do you support?
+          <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+        </summary>
+        <p class="text-slate-600 mt-4 leading-relaxed">PausePay works in the United States, Canada, United Kingdom, Ireland, France, Germany, Spain, Italy, Netherlands, Belgium, Portugal, Austria, and Finland.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-slate-900 text-slate-400">
+  <div class="max-w-7xl mx-auto px-6 py-12">
+    <div class="grid md:grid-cols-4 gap-8 mb-8">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+            <span class="text-white font-bold">P</span>
+          </div>
+          <span class="font-bold text-white text-lg">PausePay</span>
+        </div>
+        <p class="text-sm leading-relaxed">Find, cancel, and save on forgotten subscriptions.</p>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-3 text-sm">Product</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#how" class="hover:text-white transition">How It Works</a></li>
+          <li><a href="#features" class="hover:text-white transition">Features</a></li>
+          <li><a href="#pricing" class="hover:text-white transition">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-3 text-sm">Company</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-white transition">About</a></li>
+          <li><a href="#" class="hover:text-white transition">Blog</a></li>
+          <li><a href="#" class="hover:text-white transition">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="text-white font-semibold mb-3 text-sm">Legal</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="#" class="hover:text-white transition">Privacy Policy</a></li>
+          <li><a href="#" class="hover:text-white transition">Terms of Service</a></li>
+          <li><a href="#" class="hover:text-white transition">Security</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="border-t border-slate-800 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+      <p>© 2026 PausePay, Inc. All rights reserved.</p>
+      <p class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        Secured by Plaid
+      </p>
+    </div>
+  </div>
+</footer>
 
 <script>
 let subscriptions = [];
 let connected = false;
 
-// ============ PLAID CONNECT ============
+function scrollToApp() {
+  document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+}
+
 async function connectBank() {
   document.getElementById('status').innerText = 'Generating secure link...';
   try {
@@ -142,12 +483,11 @@ async function connectBank() {
     });
     handler.open();
   } catch (e) {
-    document.getElementById('status').innerText = '❌ Connection failed. Try again.';
+    document.getElementById('status').innerText = '❌ Connection failed. Please try again.';
     console.error(e);
   }
 }
 
-// ============ REFRESH DATA ============
 async function refreshData() {
   document.getElementById('status').innerText = 'Scanning 90 days of transactions...';
   const res = await fetch('/api/transactions', {
@@ -166,21 +506,20 @@ async function refreshData() {
 
   let html = '';
   subscriptions.forEach(sub => {
-    html += `<li class="px-6 py-4 flex flex-wrap justify-between items-center gap-3 hover:bg-gray-50">
+    html += `<li class="px-6 py-4 flex flex-wrap justify-between items-center gap-3 hover:bg-slate-50">
       <div class="flex-1 min-w-[200px]">
-        <p class="font-bold text-gray-800">${sub.merchant}</p>
-        <p class="text-sm text-gray-500">$${sub.amount.toFixed(2)}/mo · Last: ${sub.last_charged} · ${sub.category}</p>
+        <p class="font-bold text-slate-800">${sub.merchant}</p>
+        <p class="text-sm text-slate-500">$${sub.amount.toFixed(2)}/mo · Last: ${sub.last_charged} · ${sub.category}</p>
       </div>
       <div class="flex gap-2">
-        <button onclick="pauseSubscription('${sub.merchant}')" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 font-semibold px-4 py-2 rounded-full text-sm">⏸ Pause</button>
-        <button onclick="alert('${sub.cancel_instructions}')" class="bg-red-100 hover:bg-red-200 text-red-700 font-semibold px-4 py-2 rounded-full text-sm">✕ Cancel</button>
+        <button onclick="pauseSubscription('${sub.merchant}')" class="bg-amber-100 hover:bg-amber-200 text-amber-700 font-semibold px-4 py-2 rounded-full text-sm transition">⏸ Pause</button>
+        <button onclick="alert('${sub.cancel_instructions}')" class="bg-red-100 hover:bg-red-200 text-red-700 font-semibold px-4 py-2 rounded-full text-sm transition">✕ Cancel</button>
       </div>
     </li>`;
   });
   document.getElementById('list').innerHTML = html;
   document.getElementById('status').innerText = `Found ${subscriptions.length} subscriptions!`;
 
-  // Analytics
   if (data.categories && Object.keys(data.categories).length > 0) {
     let ahtml = '<div class="grid grid-cols-2 md:grid-cols-3 gap-3">';
     Object.keys(data.categories).forEach(cat => {
@@ -194,7 +533,6 @@ async function refreshData() {
   }
 }
 
-// ============ PAUSE ============
 async function pauseSubscription(merchant) {
   await fetch('/api/toggle-pause', {
     method: 'POST',
@@ -204,7 +542,6 @@ async function pauseSubscription(merchant) {
   alert(`⏸ ${merchant} paused. We'll notify you when it resumes.`);
 }
 
-// ============ DISPUTES ============
 async function submitDispute() {
   const merchant = document.getElementById('disputeMerchant').value.trim();
   const amount = document.getElementById('disputeAmount').value;
@@ -228,18 +565,17 @@ async function submitDispute() {
   }
 }
 
-// ============ OFFERS ============
 async function loadOffers() {
   const res = await fetch('/api/offers');
   const data = await res.json();
   let html = '';
   data.offers.forEach(offer => {
-    html += `<div class="border border-gray-200 rounded-xl p-4 flex flex-wrap justify-between items-center gap-3">
+    html += `<div class="border border-slate-200 rounded-xl p-4 flex flex-wrap justify-between items-center gap-3">
       <div class="flex-1 min-w-[200px]">
-        <p class="font-bold text-gray-800">${offer.merchant} — ${offer.title}</p>
-        <p class="text-sm text-gray-500">${offer.description}</p>
+        <p class="font-bold text-slate-800">${offer.merchant} — ${offer.title}</p>
+        <p class="text-sm text-slate-500">${offer.description}</p>
       </div>
-      <button onclick="acceptOffer(${offer.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded-full text-sm">Claim</button>
+      <button onclick="acceptOffer(${offer.id})" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2 rounded-full text-sm transition">Claim</button>
     </div>`;
   });
   document.getElementById('offersList').innerHTML = html;
@@ -255,7 +591,6 @@ async function acceptOffer(offerId) {
   alert(`🎁 ${data.message}`);
 }
 
-// ============ NEGOTIATE ============
 async function submitNegotiation() {
   const billType = document.getElementById('billType').value;
   const provider = document.getElementById('billProvider').value.trim();
@@ -277,23 +612,21 @@ async function submitNegotiation() {
   }
 }
 
-// ============ UPGRADE ============
 async function upgrade() {
   const res = await fetch('/api/create-checkout-session', { method: 'POST' });
   const data = await res.json();
   if (data.url) window.location.href = data.url;
-  else alert('Stripe is not configured yet. Coming soon!');
+  else alert('Premium coming soon! We'll notify you when it\'s ready.');
 }
 
-// ============ TABS ============
 function showTab(tabName) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
   document.getElementById('tab-' + tabName).classList.remove('hidden');
   document.querySelectorAll('.tab-btn').forEach(btn => {
     if (btn.dataset.tab === tabName) {
-      btn.className = 'tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold';
+      btn.className = 'tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm';
     } else {
-      btn.className = 'tab-btn bg-gray-200 text-gray-700 px-5 py-2 rounded-full font-semibold';
+      btn.className = 'tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm';
     }
   });
 }
