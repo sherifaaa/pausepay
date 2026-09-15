@@ -616,7 +616,7 @@ async function upgrade() {
   const res = await fetch('/api/create-checkout-session', { method: 'POST' });
   const data = await res.json();
   if (data.url) window.location.href = data.url;
-  else alert('Premium coming soon! We'll notify you when it\'s ready.');
+  else alert('Premium coming soon! We\'ll notify you when it\'s ready.');
 }
 
 function showTab(tabName) {
