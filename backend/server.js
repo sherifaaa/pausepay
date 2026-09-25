@@ -33,6 +33,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder'
 const users = {};
 const disputes = [];
 const negotiationRequests = [];
+const recoveryInvoices = [];
 
 const offers = [
   { id: 1, merchant: 'Netflix', title: '3 Months at 50% Off', description: 'Stay with Netflix and get 3 months half price', code: 'SAVE50', commission: 15 },
@@ -42,6 +43,42 @@ const offers = [
   { id: 5, merchant: 'Adobe', title: '2 Months Free', description: 'Get 2 months free on annual Creative Cloud', code: 'ADOBE2FREE', commission: 25 },
   { id: 6, merchant: 'Dropbox', title: '25% Off Annual', description: 'Save 25% when you switch to annual billing', code: 'DROP25', commission: 20 },
 ];
+
+// Business tool category map — detects duplicate tools
+const CATEGORY_MAP = {
+  'slack': 'Team Communication',
+  'microsoft teams': 'Team Communication',
+  'zoom': 'Video Conferencing',
+  'google meet': 'Video Conferencing',
+  'notion': 'Project Management',
+  'asana': 'Project Management',
+  'monday.com': 'Project Management',
+  'trello': 'Project Management',
+  'clickup': 'Project Management',
+  'jira': 'Project Management',
+  'dropbox': 'Cloud Storage',
+  'google drive': 'Cloud Storage',
+  'box': 'Cloud Storage',
+  'adobe': 'Creative Software',
+  'canva': 'Creative Software',
+  'figma': 'Design Software',
+  'sketch': 'Design Software',
+  'hubspot': 'CRM',
+  'salesforce': 'CRM',
+  'pipedrive': 'CRM',
+  'mailchimp': 'Email Marketing',
+  'sendgrid': 'Email Marketing',
+  'convertkit': 'Email Marketing',
+  'quickbooks': 'Accounting',
+  'xero': 'Accounting',
+  'freshbooks': 'Accounting',
+  'github': 'Developer Tools',
+  'gitlab': 'Developer Tools',
+  'bitbucket': 'Developer Tools',
+  'chatgpt': 'AI Tools',
+  'claude': 'AI Tools',
+  'gemini': 'AI Tools',
+};
 
 const SUPPORTED_COUNTRIES = ['US', 'CA', 'GB', 'IE', 'FR', 'DE', 'ES', 'IT', 'NL', 'BE', 'PT', 'AT', 'FI'];
 
@@ -76,7 +113,7 @@ app.post('/api/exchange_token', async (req, res) => {
   }
 });
 
-// ============ PLAID: FETCH & DETECT SUBSCRIPTIONS ============
+// ============ PLAID: FETCH & DETECT (CONSUMER) ============
 app.post('/api/transactions', async (req, res) => {
   try {
     const uid = req.body.userId || 'user-1';
@@ -133,13 +170,117 @@ app.post('/api/transactions', async (req, res) => {
   }
 });
 
-// ============ PAUSE / RESUME ============
+// ============ B2B: SCAN CORPORATE CARD ============
+app.post('/api/b2b/scan', async (req, res) => {
+  try {
+    const uid = req.body.userId || 'user-1';
+    if (!users[uid]?.accessToken) return res.status(400).json({ error: 'No corporate card connected' });
+
+    const today = new Date();
+    const startDate = new Date(today);
+    startDate.setDate(startDate.getDate() - 90);
+
+    const tx = await plaidClient.transactionsGet({
+      access_token: users[uid].accessToken,
+      start_date: startDate.toISOString().split('T')[0],
+      end_date: today.toISOString().split('T')[0],
+    });
+
+    const map = {};
+    tx.data.transactions.forEach(t => {
+      const key = `${t.name}__${t.amount}`;
+      if (!map[key]) map[key] = [];
+      map[key].push({ date: t.date, category: (t.category && t.category[0]) || 'Other' });
+    });
+
+    const subscriptions = [];
+    Object.keys(map).forEach(key => {
+      if (map[key].length >= 2) {
+        const parts = key.split('__');
+        const merchant = parts[0];
+        const amount = parseFloat(parts[1]);
+        const toolCategory = detectToolCategory(merchant);
+        subscriptions.push({
+          merchant,
+          amount,
+          occurrences: map[key].length,
+          last_charged: map[key][map[key].length - 1].date,
+          toolCategory,
+          isDuplicate: false,
+        });
+      }
+    });
+
+    // Detect duplicates: 2+ tools in the same category
+    const byCategory = {};
+    subscriptions.forEach(s => {
+      if (s.toolCategory) {
+        if (!byCategory[s.toolCategory]) byCategory[s.toolCategory] = [];
+        byCategory[s.toolCategory].push(s);
+      }
+    });
+
+    const duplicates = [];
+    Object.keys(byCategory).forEach(cat => {
+      if (byCategory[cat].length >= 2) {
+        byCategory[cat].forEach(s => { s.isDuplicate = true; });
+        duplicates.push({
+          category: cat,
+          tools: byCategory[cat].map(s => s.merchant),
+          monthlyWaste: byCategory[cat].slice(1).reduce((sum, s) => sum + s.amount, 0),
+        });
+      }
+    });
+
+    subscriptions.sort((a, b) => b.amount - a.amount);
+    const totalMonthly = subscriptions.reduce((s, sub) => s + sub.amount, 0);
+    const recoverableMonthly = duplicates.reduce((s, d) => s + d.monthlyWaste, 0);
+
+    res.json({
+      subscriptions,
+      duplicates,
+      total_monthly: totalMonthly,
+      recoverable_monthly: recoverableMonthly,
+      recoverable_yearly: recoverableMonthly * 12,
+    });
+  } catch (error) {
+    console.error('B2B scan error:', error.response?.data || error.message);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// ============ B2B: COST RECOVERY INVOICE ============
+app.post('/api/b2b/recovery', (req, res) => {
+  const { clientName, items, userId } = req.body;
+  if (!clientName || !items || items.length === 0) {
+    return res.status(400).json({ error: 'Client name and items required' });
+  }
+  const total = items.reduce((s, i) => s + i.amount, 0);
+  const invoice = {
+    id: recoveryInvoices.length + 1,
+    clientName,
+    items,
+    total,
+    userId: userId || 'user-1',
+    status: 'draft',
+    createdAt: new Date().toISOString(),
+  };
+  recoveryInvoices.push(invoice);
+  res.json({ success: true, invoice });
+});
+
+app.get('/api/b2b/recovery', (req, res) => {
+  const uid = req.query.userId || 'user-1';
+  res.json({ invoices: recoveryInvoices.filter(i => i.userId === uid) });
+});
+
+// ============ CONSUMER: PAUSE / RESUME ============
 app.post('/api/toggle-pause', (req, res) => {
   const { subscriptionId, action } = req.body;
   res.json({ success: true, message: `${subscriptionId} ${action === 'pause' ? 'paused' : 'resumed'}` });
 });
 
-// ============ DISPUTE MANAGEMENT ============
+// ============ CONSUMER: DISPUTES ============
 app.post('/api/create-dispute', (req, res) => {
   const { merchant, amount, reason, userId } = req.body;
   if (!merchant || !amount || !reason) {
@@ -155,16 +296,10 @@ app.post('/api/create-dispute', (req, res) => {
     createdAt: new Date().toISOString(),
   };
   disputes.push(dispute);
-  console.log('📩 New dispute:', dispute);
   res.json({ success: true, dispute });
 });
 
-app.get('/api/disputes', (req, res) => {
-  const uid = req.query.userId || 'user-1';
-  res.json({ disputes: disputes.filter(d => d.userId === uid) });
-});
-
-// ============ MERCHANT OFFERS ============
+// ============ CONSUMER: OFFERS ============
 app.get('/api/offers', (req, res) => {
   const { merchant } = req.query;
   const result = merchant
@@ -177,11 +312,10 @@ app.post('/api/accept-offer', (req, res) => {
   const { offerId, userId } = req.body;
   const offer = offers.find(o => o.id === offerId);
   if (!offer) return res.status(404).json({ error: 'Offer not found' });
-  console.log('🎁 Offer accepted:', offer.merchant, 'by', userId);
   res.json({ success: true, offer, message: `Use code ${offer.code} at ${offer.merchant} checkout.` });
 });
 
-// ============ BILL NEGOTIATION ============
+// ============ CONSUMER: NEGOTIATION ============
 app.post('/api/negotiate-bill', (req, res) => {
   const { billType, provider, currentAmount, userId } = req.body;
   if (!provider || !currentAmount) {
@@ -197,53 +331,29 @@ app.post('/api/negotiate-bill', (req, res) => {
     createdAt: new Date().toISOString(),
   };
   negotiationRequests.push(request);
-  console.log('💰 New negotiation request:', request);
   const estimatedSavings = Math.round(parseFloat(currentAmount) * 0.25);
   res.json({
     success: true,
-    message: 'Request received. Our negotiation team will contact you within 24 hours.',
+    message: 'Request received. Our team will contact you within 24 hours.',
     estimatedSavings,
   });
 });
 
-// ============ SPENDING ANALYTICS ============
-app.post('/api/analytics', async (req, res) => {
-  try {
-    const uid = req.body.userId || 'user-1';
-    if (!users[uid]?.accessToken) return res.status(400).json({ error: 'No bank connected' });
-
-    const today = new Date();
-    const startDate = new Date(today);
-    startDate.setDate(startDate.getDate() - 90);
-
-    const tx = await plaidClient.transactionsGet({
-      access_token: users[uid].accessToken,
-      start_date: startDate.toISOString().split('T')[0],
-      end_date: today.toISOString().split('T')[0],
-    });
-
-    const monthly = {};
-    tx.data.transactions.forEach(t => {
-      const month = t.date.substring(0, 7);
-      monthly[month] = (monthly[month] || 0) + Math.abs(t.amount);
-    });
-
-    res.json({ monthly_spending: monthly, total_transactions: tx.data.transactions.length });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-
-// ============ STRIPE CHECKOUT ============
+// ============ STRIPE: CHECKOUT (CONSUMER + BUSINESS) ============
 app.post('/api/create-checkout-session', async (req, res) => {
   try {
-    if (!process.env.STRIPE_PRICE_ID) {
+    const priceId = req.body.plan === 'business'
+      ? process.env.STRIPE_BUSINESS_PRICE_ID
+      : process.env.STRIPE_PRICE_ID;
+
+    if (!priceId) {
       return res.status(400).json({ error: 'Stripe not configured yet' });
     }
+
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       payment_method_types: ['card'],
-      line_items: [{ price: process.env.STRIPE_PRICE_ID, quantity: 1 }],
+      line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${req.headers.origin}/?payment=success`,
       cancel_url: `${req.headers.origin}/?payment=cancelled`,
     });
@@ -254,7 +364,15 @@ app.post('/api/create-checkout-session', async (req, res) => {
   }
 });
 
-// ============ CANCEL INSTRUCTIONS ============
+// ============ HELPERS ============
+function detectToolCategory(merchant) {
+  const lower = merchant.toLowerCase();
+  for (const key of Object.keys(CATEGORY_MAP)) {
+    if (lower.includes(key)) return CATEGORY_MAP[key];
+  }
+  return null;
+}
+
 function getCancelInstructions(merchant) {
   const l = merchant.toLowerCase();
   if (l.includes('netflix')) return 'Netflix > Account > Cancel Membership.';
@@ -269,13 +387,13 @@ function getCancelInstructions(merchant) {
   return `Log into your ${merchant} account and go to Settings to cancel.`;
 }
 
-// ============ SERVE FRONTEND ============
-app.use(express.static(path.join(__dirname, '../frontend')));
-
 // ============ HEALTH CHECK ============
 app.get('/api/health', (req, res) => {
   res.json({ status: 'PausePay API is running', timestamp: new Date().toISOString() });
 });
+
+// ============ SERVE FRONTEND ============
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // ============ START ============
 const PORT = process.env.PORT || 5000;
