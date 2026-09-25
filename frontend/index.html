@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PausePay — Find, Cancel & Save on Forgotten Subscriptions</title>
-<meta name="description" content="PausePay helps you find, cancel, and negotiate subscriptions you forgot about. Save an average of $512 per year. Free to start.">
+<title>PausePay — Find & Cancel Wasted Subscriptions. Private. Simple.</title>
+<meta name="description" content="PausePay finds and cancels forgotten subscriptions. We never sell your data and never train AI on your transactions.">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.plaid.com/link/v2/stable/link-initialize.js"></script>
 <style>
@@ -25,13 +25,14 @@
       <span class="font-bold text-xl text-slate-900">PausePay</span>
     </a>
     <div class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-600">
+      <a href="#privacy" class="hover:text-indigo-600 transition">Privacy</a>
       <a href="#how" class="hover:text-indigo-600 transition">How It Works</a>
-      <a href="#features" class="hover:text-indigo-600 transition">Features</a>
       <a href="#pricing" class="hover:text-indigo-600 transition">Pricing</a>
+      <a href="#business" class="hover:text-indigo-600 transition">For Business</a>
       <a href="#faq" class="hover:text-indigo-600 transition">FAQ</a>
     </div>
     <button onclick="scrollToApp()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition shadow-sm">
-      Get Started Free
+      Get Started
     </button>
   </div>
 </nav>
@@ -40,40 +41,30 @@
 <section class="gradient-hero text-white">
   <div class="max-w-7xl mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
     <div>
-      <div class="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm font-medium mb-6">
-        <span class="w-2 h-2 bg-emerald-400 rounded-full"></span>
-        Trusted by 10,000+ Americans
+      <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-400/30 rounded-full px-4 py-1.5 text-sm font-medium mb-6 text-emerald-300">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+        Privacy-first. No data selling. Ever.
       </div>
       <h1 class="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight mb-6">
         Stop paying for subscriptions you forgot about.
       </h1>
       <p class="text-lg md:text-xl text-slate-300 mb-8 leading-relaxed">
-        The average American wastes <strong class="text-white">$512 per year</strong> on forgotten subscriptions. PausePay finds them, cancels them, and even negotiates your bills — all in one place.
+        The average American wastes <strong class="text-white">$512 per year</strong> on forgotten subscriptions. PausePay finds and cancels them — without ever seeing your password or selling your data.
       </p>
       <div class="flex flex-wrap gap-4">
         <button onclick="scrollToApp()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-4 rounded-xl transition shadow-lg">
           Find My Subscriptions →
         </button>
-        <a href="#how" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-xl transition">
-          See How It Works
+        <a href="#privacy" class="bg-white/10 hover:bg-white/20 border border-white/20 text-white font-semibold px-8 py-4 rounded-xl transition">
+          How We Protect Your Data
         </a>
-      </div>
-      <div class="mt-8 flex items-center gap-6 text-sm text-slate-400">
-        <div class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-          No credit card required
-        </div>
-        <div class="flex items-center gap-2">
-          <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-          Bank-level encryption
-        </div>
       </div>
     </div>
     <div class="hidden md:block">
       <div class="bg-white/5 backdrop-blur border border-white/10 rounded-2xl p-6 shadow-2xl">
         <div class="flex items-center justify-between mb-4">
           <span class="text-sm font-medium text-slate-300">Your monthly subscriptions</span>
-          <span class="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full font-semibold">Live</span>
+          <span class="text-xs bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full font-semibold">Private</span>
         </div>
         <div class="text-4xl font-extrabold text-white mb-6">$187.43<span class="text-lg text-slate-400 font-medium">/mo</span></div>
         <div class="space-y-3">
@@ -99,27 +90,51 @@
   </div>
 </section>
 
-<!-- TRUST BAR -->
-<section class="bg-slate-50 border-b border-slate-200">
-  <div class="max-w-7xl mx-auto px-6 py-8">
-    <p class="text-center text-sm font-medium text-slate-500 mb-6">BANK-LEVEL SECURITY. TRUSTED INFRASTRUCTURE.</p>
-    <div class="flex flex-wrap justify-center items-center gap-8 md:gap-16 text-slate-400">
-      <div class="flex items-center gap-2 font-semibold text-lg">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-        Plaid
+<!-- PRIVACY SECTION -->
+<section id="privacy" class="py-20 md:py-24 bg-slate-900 text-white">
+  <div class="max-w-5xl mx-auto px-6">
+    <div class="text-center mb-14">
+      <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-400/30 rounded-full px-4 py-1.5 text-sm font-medium mb-4 text-emerald-300">
+        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001z" clip-rule="evenodd"/></svg>
+        The PausePay Privacy Promise
       </div>
-      <div class="flex items-center gap-2 font-semibold text-lg">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-        256-bit Encryption
+      <h2 class="text-3xl md:text-5xl font-extrabold mb-4">Your data is yours. Not ours. Not anyone's.</h2>
+      <p class="text-lg text-slate-300 max-w-2xl mx-auto">Most AI assistants want everything — your messages, your photos, your email. PausePay wants one thing: to find your subscriptions.</p>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6">
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div class="text-2xl mb-3">🔒</div>
+        <h3 class="font-bold text-lg mb-2">We never see your password</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">Bank connections are handled entirely by Plaid, used by Venmo, Robinhood, and Coinbase. We receive transaction data — never credentials.</p>
       </div>
-      <div class="flex items-center gap-2 font-semibold text-lg">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
-        GDPR Compliant
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div class="text-2xl mb-3">👁️</div>
+        <h3 class="font-bold text-lg mb-2">Read-only. Always.</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">We see recurring charges. We cannot move, withdraw, or transfer a single dollar.</p>
       </div>
-      <div class="flex items-center gap-2 font-semibold text-lg">
-        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        Read-Only Access
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div class="text-2xl mb-3">🚫</div>
+        <h3 class="font-bold text-lg mb-2">We never sell your data</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">No advertisers. No data brokers. No "trusted partners." Your transaction history is used for one purpose: finding subscriptions.</p>
       </div>
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div class="text-2xl mb-3">🧠</div>
+        <h3 class="font-bold text-lg mb-2">We don't train AI on your data</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">Your transactions are never used to train any AI model — ours or anyone else's.</p>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div class="text-2xl mb-3">🗑️</div>
+        <h3 class="font-bold text-lg mb-2">Delete everything anytime</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">One click and your account, data, and bank connection are permanently removed. No dark patterns.</p>
+      </div>
+      <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <div class="text-2xl mb-3">📜</div>
+        <h3 class="font-bold text-lg mb-2">Plain English policies</h3>
+        <p class="text-slate-300 text-sm leading-relaxed">No 40-page legal documents. We say what we do and do what we say.</p>
+      </div>
+    </div>
+    <div class="text-center mt-10">
+      <p class="text-slate-400 text-sm">Other AI assistants want your whole life. We just want to save you money.</p>
     </div>
   </div>
 </section>
@@ -137,7 +152,7 @@
           <span class="text-3xl font-bold text-indigo-600">1</span>
         </div>
         <h3 class="text-xl font-bold text-slate-900 mb-3">Connect your bank</h3>
-        <p class="text-slate-600 leading-relaxed">Securely link your bank account in seconds using Plaid — the same technology trusted by Venmo, Robinhood, and Coinbase.</p>
+        <p class="text-slate-600 leading-relaxed">Securely link your bank in seconds using Plaid. Read-only access. We never see your password.</p>
       </div>
       <div class="text-center">
         <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -151,64 +166,28 @@
           <span class="text-3xl font-bold text-indigo-600">3</span>
         </div>
         <h3 class="text-xl font-bold text-slate-900 mb-3">Cancel and save</h3>
-        <p class="text-slate-600 leading-relaxed">One-click cancel instructions, auto-cancellation, and bill negotiation. You save money. We only win when you do.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FEATURES -->
-<section id="features" class="py-20 md:py-28 bg-slate-50">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-16">
-      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Everything you need to take control</h2>
-      <p class="text-lg text-slate-600 max-w-2xl mx-auto">Five powerful tools in one simple app.</p>
-    </div>
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
-        <div class="text-3xl mb-4">🔍</div>
-        <h3 class="text-lg font-bold text-slate-900 mb-2">Subscription Tracking</h3>
-        <p class="text-slate-600 text-sm leading-relaxed">See every recurring charge in one dashboard, sorted by amount and category.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
-        <div class="text-3xl mb-4">✕</div>
-        <h3 class="text-lg font-bold text-slate-900 mb-2">One-Click Cancel</h3>
-        <p class="text-slate-600 text-sm leading-relaxed">Step-by-step cancellation instructions for 500+ services, and auto-cancel for the top 50.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
-        <div class="text-3xl mb-4">⚠️</div>
-        <h3 class="text-lg font-bold text-slate-900 mb-2">Dispute Management</h3>
-        <p class="text-slate-600 text-sm leading-relaxed">Charged for something you cancelled? File a dispute and we handle the merchant for you.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
-        <div class="text-3xl mb-4">💰</div>
-        <h3 class="text-lg font-bold text-slate-900 mb-2">Bill Negotiation</h3>
-        <p class="text-slate-600 text-sm leading-relaxed">We negotiate your internet, phone, and cable bills. You only pay a percentage of what we save you.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
-        <div class="text-3xl mb-4">🎁</div>
-        <h3 class="text-lg font-bold text-slate-900 mb-2">Merchant Offers</h3>
-        <p class="text-slate-600 text-sm leading-relaxed">Exclusive discounts from merchants — before you cancel, check if there's a better deal.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 border border-slate-200 hover:shadow-lg transition">
-        <div class="text-3xl mb-4">📊</div>
-        <h3 class="text-lg font-bold text-slate-900 mb-2">Spending Analytics</h3>
-        <p class="text-slate-600 text-sm leading-relaxed">Understand where your money goes with category breakdowns and monthly trends.</p>
+        <p class="text-slate-600 leading-relaxed">One-click cancel instructions, dispute filing, and bill negotiation. You save money. We only win when you do.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- APP SECTION -->
-<section id="app" class="py-20 md:py-28 bg-white">
+<section id="app" class="py-20 md:py-28 bg-slate-50">
   <div class="max-w-4xl mx-auto px-6">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Try it now — it's free</h2>
-      <p class="text-lg text-slate-600">Connect your bank and see your subscriptions in 60 seconds.</p>
+    <div class="text-center mb-10">
+      <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Try it now</h2>
+      <p class="text-lg text-slate-600 mb-6">Connect your bank and see your subscriptions in 60 seconds.</p>
+
+      <!-- MODE TOGGLE -->
+      <div class="inline-flex bg-white border border-slate-200 rounded-full p-1 shadow-sm">
+        <button id="modeConsumerBtn" onclick="setMode('consumer')" class="mode-btn px-5 py-2 rounded-full font-semibold text-sm bg-indigo-600 text-white">For Individuals</button>
+        <button id="modeBusinessBtn" onclick="setMode('business')" class="mode-btn px-5 py-2 rounded-full font-semibold text-sm text-slate-600">For Business</button>
+      </div>
     </div>
 
     <!-- STATUS -->
-    <div id="status" class="text-center text-slate-600 bg-slate-50 border border-slate-200 p-4 rounded-xl mb-6">
+    <div id="status" class="text-center text-slate-600 bg-white border border-slate-200 p-4 rounded-xl mb-6">
       Click "Connect Bank" to start. We'll never see your password.
     </div>
 
@@ -221,12 +200,12 @@
         🔄 Refresh
       </button>
       <button id="upgradeBtn" onclick="upgrade()" class="hidden bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow transition">
-        ⭐ Upgrade to Premium
+        ⭐ Upgrade
       </button>
     </div>
 
-    <!-- TABS -->
-    <div id="tabs" class="hidden flex flex-wrap gap-2 justify-center mb-6">
+    <!-- CONSUMER TABS -->
+    <div id="consumerTabs" class="hidden flex flex-wrap gap-2 justify-center mb-6">
       <button onclick="showTab('subscriptions')" class="tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm" data-tab="subscriptions">📋 Subscriptions</button>
       <button onclick="showTab('analytics')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="analytics">📊 Analytics</button>
       <button onclick="showTab('disputes')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="disputes">⚠️ Disputes</button>
@@ -234,14 +213,21 @@
       <button onclick="showTab('negotiate')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="negotiate">💰 Negotiate</button>
     </div>
 
-    <!-- SAVINGS BANNER -->
-    <div id="savingsBanner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-6 text-center">
-      <p class="text-emerald-700 font-semibold text-sm">YOU'RE SPENDING</p>
-      <p class="text-4xl font-extrabold text-emerald-600 my-1" id="totalMonthly">$0.00</p>
-      <p class="text-emerald-600 text-sm">per month on <span id="subCount">0</span> subscriptions</p>
+    <!-- BUSINESS TABS -->
+    <div id="businessTabs" class="hidden flex flex-wrap gap-2 justify-center mb-6">
+      <button onclick="showTab('btools')" class="btab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm" data-tab="btools">💼 All Tools</button>
+      <button onclick="showTab('bduplicates')" class="btab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="bduplicates">🔍 Duplicates</button>
+      <button onclick="showTab('brecovery')" class="btab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="brecovery">💰 Cost Recovery</button>
     </div>
 
-    <!-- TAB: SUBSCRIPTIONS -->
+    <!-- SAVINGS BANNER -->
+    <div id="savingsBanner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-6 text-center">
+      <p class="text-emerald-700 font-semibold text-sm" id="savingsLabel">YOU'RE SPENDING</p>
+      <p class="text-4xl font-extrabold text-emerald-600 my-1" id="totalMonthly">$0.00</p>
+      <p class="text-emerald-600 text-sm" id="savingsSub">per month on <span id="subCount">0</span> subscriptions</p>
+    </div>
+
+    <!-- CONSUMER: SUBSCRIPTIONS -->
     <div id="tab-subscriptions" class="tab-content">
       <div id="results" class="hidden bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
         <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
@@ -251,7 +237,7 @@
       </div>
     </div>
 
-    <!-- TAB: ANALYTICS -->
+    <!-- CONSUMER: ANALYTICS -->
     <div id="tab-analytics" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
         <h2 class="font-bold text-slate-800 text-xl mb-4">📊 Spending Analytics</h2>
@@ -259,11 +245,11 @@
       </div>
     </div>
 
-    <!-- TAB: DISPUTES -->
+    <!-- CONSUMER: DISPUTES -->
     <div id="tab-disputes" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
         <h2 class="font-bold text-slate-800 text-xl mb-4">⚠️ Dispute a Charge</h2>
-        <p class="text-slate-600 text-sm mb-4">Charged for something you cancelled? File a dispute and we'll contact the merchant on your behalf.</p>
+        <p class="text-slate-600 text-sm mb-4">Charged for something you cancelled? File a dispute and we'll contact the merchant.</p>
         <div class="space-y-4">
           <input id="disputeMerchant" placeholder="Merchant name (e.g., Netflix)" class="w-full border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none">
           <input id="disputeAmount" type="number" placeholder="Amount ($)" class="w-full border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none">
@@ -279,7 +265,7 @@
       </div>
     </div>
 
-    <!-- TAB: OFFERS -->
+    <!-- CONSUMER: OFFERS -->
     <div id="tab-offers" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
         <h2 class="font-bold text-slate-800 text-xl mb-4">🎁 Exclusive Offers</h2>
@@ -288,7 +274,7 @@
       </div>
     </div>
 
-    <!-- TAB: NEGOTIATE -->
+    <!-- CONSUMER: NEGOTIATE -->
     <div id="tab-negotiate" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
         <h2 class="font-bold text-slate-800 text-xl mb-4">💰 Negotiate Your Bills</h2>
@@ -308,92 +294,137 @@
       </div>
     </div>
 
+    <!-- BUSINESS: ALL TOOLS -->
+    <div id="tab-btools" class="tab-content hidden">
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
+        <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
+          <h2 class="font-bold text-slate-800">Company Recurring Tools</h2>
+          <span id="btoolCount" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full">0</span>
+        </div>
+        <ul id="btoolList" class="divide-y divide-slate-100"></ul>
+      </div>
+    </div>
+
+    <!-- BUSINESS: DUPLICATES -->
+    <div id="tab-bduplicates" class="tab-content hidden">
+      <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
+        <h2 class="font-bold text-slate-800 text-xl mb-4">🔍 Duplicate Tools Detected</h2>
+        <p class="text-slate-600 text-sm mb-4">These tools serve the same function. Keeping one and canceling the rest is immediate savings.</p>
+        <div id="duplicateList" class="space-y-3"></div>
+      </div>
+    </div>
+
+    <!-- BUSINESS: COST RECOVERY -->
+    <div id="tab-brecovery" class="tab-content hidden">
+      <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
+        <h2 class="font-bold text-slate-800 text-xl mb-4">💰 Generate Client Recovery Invoice</h2>
+        <p class="text-slate-600 text-sm mb-4">Rebill recovered software costs directly to your client.</p>
+        <div class="space-y-4">
+          <input id="recoveryClient" placeholder="Client name (e.g., Acme Corp)" class="w-full border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none">
+          <div id="recoveryItems" class="bg-slate-50 rounded-xl p-3 text-sm text-slate-500">Select tools from the "All Tools" tab to add them here.</div>
+          <button onclick="generateInvoice()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl w-full transition">Generate Invoice</button>
+        </div>
+        <div id="invoiceResult" class="mt-4"></div>
+      </div>
+    </div>
+
     <p class="text-center text-slate-400 text-xs mt-8 flex items-center justify-center gap-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-      Secured by Plaid. Read-only access. We never see your password.
+      Secured by Plaid. Read-only. We never see your password.
     </p>
   </div>
 </section>
 
 <!-- PRICING -->
-<section id="pricing" class="py-20 md:py-28 bg-slate-50">
-  <div class="max-w-5xl mx-auto px-6">
+<section id="pricing" class="py-20 md:py-28 bg-white">
+  <div class="max-w-6xl mx-auto px-6">
     <div class="text-center mb-16">
       <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Simple, honest pricing</h2>
-      <p class="text-lg text-slate-600">Start free. Upgrade when you're ready.</p>
+      <p class="text-lg text-slate-600">One price. No upsells. No data selling.</p>
     </div>
     <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
-      <div class="bg-white rounded-2xl p-8 border-2 border-slate-200">
-        <h3 class="text-2xl font-bold text-slate-900 mb-2">Free</h3>
-        <p class="text-slate-600 mb-6">Everything you need to get started</p>
-        <div class="text-5xl font-extrabold text-slate-900 mb-6">$0<span class="text-lg text-slate-500 font-medium">/mo</span></div>
-        <ul class="space-y-3 mb-8 text-slate-700">
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Track up to 5 subscriptions</li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Cancel instructions</li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Spending analytics</li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Dispute filing</li>
-        </ul>
-        <button onclick="scrollToApp()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition">Get Started Free</button>
-      </div>
       <div class="bg-slate-900 rounded-2xl p-8 border-2 border-indigo-600 relative">
-        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-bold px-4 py-1 rounded-full">MOST POPULAR</div>
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-bold px-4 py-1 rounded-full">FOR INDIVIDUALS</div>
         <h3 class="text-2xl font-bold text-white mb-2">Premium</h3>
-        <p class="text-slate-400 mb-6">For people serious about saving</p>
-        <div class="text-5xl font-extrabold text-white mb-6">$5<span class="text-lg text-slate-400 font-medium">/mo</span></div>
+        <p class="text-slate-400 mb-6">Everything you need to stop wasting money</p>
+        <div class="text-5xl font-extrabold text-white mb-6">$20<span class="text-lg text-slate-400 font-medium">/mo</span></div>
         <ul class="space-y-3 mb-8 text-slate-200">
-          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Unlimited subscriptions</li>
-          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Auto-cancellation</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Unlimited subscription tracking</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> One-click cancel instructions</li>
           <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Bill negotiation</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Dispute filing</li>
           <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Merchant offers</li>
-          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Priority support</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Zero data selling. Ever.</li>
         </ul>
-        <button onclick="upgrade()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition">Upgrade to Premium</button>
+        <button onclick="upgrade('consumer')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition">Get Premium</button>
+      </div>
+      <div class="bg-white rounded-2xl p-8 border-2 border-slate-200 relative">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-bold px-4 py-1 rounded-full">FOR BUSINESS</div>
+        <h3 class="text-2xl font-bold text-slate-900 mb-2">Business</h3>
+        <p class="text-slate-600 mb-6">Cost recovery + duplicate detection</p>
+        <div class="text-5xl font-extrabold text-slate-900 mb-6">$500<span class="text-lg text-slate-500 font-medium">/mo</span></div>
+        <ul class="space-y-3 mb-8 text-slate-700">
+          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Connect unlimited corporate cards</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Duplicate tool detection</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Automated cost recovery invoices</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Client rebilling workflow</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Team dashboard</li>
+          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Priority support</li>
+        </ul>
+        <button onclick="upgrade('business')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition">Get Business</button>
       </div>
     </div>
   </div>
 </section>
 
 <!-- FAQ -->
-<section id="faq" class="py-20 md:py-28 bg-white">
+<section id="faq" class="py-20 md:py-28 bg-slate-50">
   <div class="max-w-3xl mx-auto px-6">
     <div class="text-center mb-16">
       <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Frequently asked questions</h2>
     </div>
     <div class="space-y-4">
-      <details class="bg-slate-50 rounded-xl p-6 border border-slate-200 cursor-pointer group">
+      <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
         <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
           Is PausePay safe to use?
           <span class="text-slate-400 group-open:rotate-45 transition">+</span>
         </summary>
-        <p class="text-slate-600 mt-4 leading-relaxed">Yes. PausePay uses Plaid, the same technology trusted by Venmo, Robinhood, and Coinbase. We never see or store your bank password — Plaid provides read-only access to your transaction data.</p>
+        <p class="text-slate-600 mt-4 leading-relaxed">Yes. PausePay uses Plaid, trusted by Venmo, Robinhood, and Coinbase. We never see or store your bank password — Plaid provides read-only access to your transaction data.</p>
       </details>
-      <details class="bg-slate-50 rounded-xl p-6 border border-slate-200 cursor-pointer group">
+      <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
+        <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
+          Do you sell my data?
+          <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+        </summary>
+        <p class="text-slate-600 mt-4 leading-relaxed">Never. We do not sell, share, or rent your data to advertisers, brokers, or any third party. Your transaction history is used for one purpose only: finding subscriptions you can cancel.</p>
+      </details>
+      <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
+        <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
+          Do you train AI on my data?
+          <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+        </summary>
+        <p class="text-slate-600 mt-4 leading-relaxed">No. Your transactions are never used to train any AI model — ours or anyone else's. Unlike general AI assistants, PausePay has one narrow purpose.</p>
+      </details>
+      <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
         <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
           Can PausePay access my money?
           <span class="text-slate-400 group-open:rotate-45 transition">+</span>
         </summary>
         <p class="text-slate-600 mt-4 leading-relaxed">No. We have read-only access. We can see your transactions, but we cannot move, withdraw, or transfer any funds.</p>
       </details>
-      <details class="bg-slate-50 rounded-xl p-6 border border-slate-200 cursor-pointer group">
+      <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
         <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
-          How much can I save?
+          How does the business product work?
           <span class="text-slate-400 group-open:rotate-45 transition">+</span>
         </summary>
-        <p class="text-slate-600 mt-4 leading-relaxed">The average American wastes $512 per year on forgotten subscriptions. Many PausePay users save $200+ per year within their first month.</p>
+        <p class="text-slate-600 mt-4 leading-relaxed">Businesses connect corporate cards. PausePay detects every recurring tool subscription, flags duplicates, and generates cost recovery invoices you can rebill to clients. Companies recover $12,000–$50,000 per year in wasted software spend.</p>
       </details>
-      <details class="bg-slate-50 rounded-xl p-6 border border-slate-200 cursor-pointer group">
-        <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
-          Can I cancel anytime?
-          <span class="text-slate-400 group-open:rotate-45 transition">+</span>
-        </summary>
-        <p class="text-slate-600 mt-4 leading-relaxed">Yes. You can cancel your PausePay subscription at any time with one click. No hidden fees, no contracts, no hassle.</p>
-      </details>
-      <details class="bg-slate-50 rounded-xl p-6 border border-slate-200 cursor-pointer group">
+      <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
         <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
           Which countries do you support?
           <span class="text-slate-400 group-open:rotate-45 transition">+</span>
         </summary>
-        <p class="text-slate-600 mt-4 leading-relaxed">PausePay works in the United States, Canada, United Kingdom, Ireland, France, Germany, Spain, Italy, Netherlands, Belgium, Portugal, Austria, and Finland.</p>
+        <p class="text-slate-600 mt-4 leading-relaxed">United States, Canada, United Kingdom, Ireland, France, Germany, Spain, Italy, Netherlands, Belgium, Portugal, Austria, and Finland.</p>
       </details>
     </div>
   </div>
@@ -410,13 +441,13 @@
           </div>
           <span class="font-bold text-white text-lg">PausePay</span>
         </div>
-        <p class="text-sm leading-relaxed">Find, cancel, and save on forgotten subscriptions.</p>
+        <p class="text-sm leading-relaxed">Find, cancel, and save. Without selling your data.</p>
       </div>
       <div>
         <h4 class="text-white font-semibold mb-3 text-sm">Product</h4>
         <ul class="space-y-2 text-sm">
+          <li><a href="#privacy" class="hover:text-white transition">Privacy Promise</a></li>
           <li><a href="#how" class="hover:text-white transition">How It Works</a></li>
-          <li><a href="#features" class="hover:text-white transition">Features</a></li>
           <li><a href="#pricing" class="hover:text-white transition">Pricing</a></li>
         </ul>
       </div>
@@ -441,7 +472,7 @@
       <p>© 2026 PausePay, Inc. All rights reserved.</p>
       <p class="flex items-center gap-2">
         <svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-        Secured by Plaid
+        Secured by Plaid · Read-Only Access
       </p>
     </div>
   </div>
@@ -449,10 +480,25 @@
 
 <script>
 let subscriptions = [];
+let businessSubscriptions = [];
+let duplicates = [];
+let recoveryItems = [];
+let mode = 'consumer';
 let connected = false;
 
 function scrollToApp() {
   document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
+}
+
+function setMode(newMode) {
+  mode = newMode;
+  document.getElementById('modeConsumerBtn').className = 'mode-btn px-5 py-2 rounded-full font-semibold text-sm ' + (newMode === 'consumer' ? 'bg-indigo-600 text-white' : 'text-slate-600');
+  document.getElementById('modeBusinessBtn').className = 'mode-btn px-5 py-2 rounded-full font-semibold text-sm ' + (newMode === 'business' ? 'bg-indigo-600 text-white' : 'text-slate-600');
+
+  document.getElementById('consumerTabs').classList.toggle('hidden', newMode !== 'consumer');
+  document.getElementById('businessTabs').classList.toggle('hidden', newMode !== 'business');
+
+  document.getElementById('upgradeBtn').innerText = newMode === 'business' ? '⭐ Upgrade to Business' : '⭐ Upgrade to Premium';
 }
 
 async function connectBank() {
@@ -476,20 +522,67 @@ async function connectBank() {
         document.getElementById('status').innerText = '✅ Bank connected! Loading your data...';
         document.getElementById('refreshBtn').classList.remove('hidden');
         document.getElementById('upgradeBtn').classList.remove('hidden');
-        document.getElementById('tabs').classList.remove('hidden');
         await refreshData();
-        await loadOffers();
       },
     });
     handler.open();
   } catch (e) {
     document.getElementById('status').innerText = '❌ Connection failed. Please try again.';
-    console.error(e);
   }
 }
 
 async function refreshData() {
   document.getElementById('status').innerText = 'Scanning 90 days of transactions...';
+
+  if (mode === 'business') {
+    const res = await fetch('/api/b2b/scan', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ userId: 'user-1' })
+    });
+    const data = await res.json();
+    if (data.error) { alert(data.error); return; }
+
+    businessSubscriptions = data.subscriptions || [];
+    duplicates = data.duplicates || [];
+
+    document.getElementById('savingsLabel').innerText = 'RECOVERABLE SPEND';
+    document.getElementById('totalMonthly').innerText = '$' + (data.recoverable_monthly || 0).toFixed(2);
+    document.getElementById('savingsSub').innerHTML = 'per month in duplicates and wasted tools';
+    document.getElementById('savingsBanner').classList.remove('hidden');
+
+    document.getElementById('btoolCount').innerText = businessSubscriptions.length;
+    let html = '';
+    businessSubscriptions.forEach((s, i) => {
+      html += `<li class="px-6 py-4 flex flex-wrap justify-between items-center gap-3 hover:bg-slate-50">
+        <div class="flex-1 min-w-[200px]">
+          <p class="font-bold text-slate-800">${s.merchant} ${s.isDuplicate ? '<span class="text-xs bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded-full ml-2">DUPLICATE</span>' : ''}</p>
+          <p class="text-sm text-slate-500">$${s.amount.toFixed(2)}/mo · ${s.toolCategory || 'Uncategorized'} · ${s.occurrences} charges</p>
+        </div>
+        <button onclick="addToRecovery(${i})" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-semibold px-4 py-2 rounded-full text-sm transition">+ Recover</button>
+      </li>`;
+    });
+    document.getElementById('btoolList').innerHTML = html;
+
+    let dhtml = '';
+    if (duplicates.length === 0) {
+      dhtml = '<p class="text-slate-500 text-sm">No duplicate tools detected. Nice work.</p>';
+    } else {
+      duplicates.forEach(d => {
+        dhtml += `<div class="border border-red-200 bg-red-50 rounded-xl p-4">
+          <p class="font-bold text-red-800">${d.category}</p>
+          <p class="text-sm text-red-600 mt-1">Overlapping tools: ${d.tools.join(', ')}</p>
+          <p class="text-sm font-bold text-red-700 mt-2">Wasted: $${d.monthlyWaste.toFixed(2)}/month ($${(d.monthlyWaste * 12).toFixed(2)}/year)</p>
+        </div>`;
+      });
+    }
+    document.getElementById('duplicateList').innerHTML = dhtml;
+    document.getElementById('status').innerText = `Found ${businessSubscriptions.length} tools · ${duplicates.length} duplicates`;
+
+    showTab('btools');
+    return;
+  }
+
   const res = await fetch('/api/transactions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -499,8 +592,9 @@ async function refreshData() {
   if (data.error) { alert(data.error); return; }
 
   subscriptions = data.subscriptions || [];
+  document.getElementById('savingsLabel').innerText = "YOU'RE SPENDING";
   document.getElementById('totalMonthly').innerText = '$' + (data.total_monthly || 0).toFixed(2);
-  document.getElementById('subCount').innerText = subscriptions.length;
+  document.getElementById('savingsSub').innerHTML = 'per month on ' + subscriptions.length + ' subscriptions';
   document.getElementById('savingsBanner').classList.remove('hidden');
   document.getElementById('results').classList.remove('hidden');
 
@@ -531,6 +625,42 @@ async function refreshData() {
     ahtml += '</div>';
     document.getElementById('analyticsContent').innerHTML = ahtml;
   }
+
+  await loadOffers();
+  showTab('subscriptions');
+}
+
+function addToRecovery(index) {
+  const s = businessSubscriptions[index];
+  if (!s) return;
+  if (recoveryItems.some(i => i.merchant === s.merchant)) {
+    alert('Already added to recovery.');
+    return;
+  }
+  recoveryItems.push({ merchant: s.merchant, amount: s.amount });
+  const itemsDiv = document.getElementById('recoveryItems');
+  itemsDiv.innerHTML = recoveryItems.map(i => `<div class="flex justify-between py-1"><span>${i.merchant}</span><span class="font-bold">$${i.amount.toFixed(2)}/mo</span></div>`).join('');
+  alert(`Added ${s.merchant} to recovery invoice.`);
+}
+
+async function generateInvoice() {
+  const clientName = document.getElementById('recoveryClient').value.trim();
+  if (!clientName) { alert('Enter a client name.'); return; }
+  if (recoveryItems.length === 0) { alert('Add at least one tool from the All Tools tab.'); return; }
+
+  const res = await fetch('/api/b2b/recovery', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ clientName, items: recoveryItems, userId: 'user-1' })
+  });
+  const data = await res.json();
+  if (data.success) {
+    document.getElementById('invoiceResult').innerHTML = `
+      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
+        <p class="font-bold text-emerald-700">✅ Invoice created for ${clientName}</p>
+        <p class="text-sm text-emerald-600">Total: $${data.invoice.total.toFixed(2)}/month · Status: Draft</p>
+      </div>`;
+  }
 }
 
 async function pauseSubscription(merchant) {
@@ -560,8 +690,6 @@ async function submitDispute() {
         <p class="font-bold text-red-700">✅ Dispute submitted for ${merchant}</p>
         <p class="text-sm text-red-600">We'll contact the merchant and update you within 48 hours.</p>
       </div>`;
-    document.getElementById('disputeMerchant').value = '';
-    document.getElementById('disputeAmount').value = '';
   }
 }
 
@@ -612,8 +740,13 @@ async function submitNegotiation() {
   }
 }
 
-async function upgrade() {
-  const res = await fetch('/api/create-checkout-session', { method: 'POST' });
+async function upgrade(plan) {
+  const selectedPlan = plan || mode;
+  const res = await fetch('/api/create-checkout-session', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ plan: selectedPlan })
+  });
   const data = await res.json();
   if (data.url) window.location.href = data.url;
   else alert('Premium coming soon! We\'ll notify you when it\'s ready.');
@@ -621,13 +754,18 @@ async function upgrade() {
 
 function showTab(tabName) {
   document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
-  document.getElementById('tab-' + tabName).classList.remove('hidden');
+  const target = document.getElementById('tab-' + tabName);
+  if (target) target.classList.remove('hidden');
+
   document.querySelectorAll('.tab-btn').forEach(btn => {
-    if (btn.dataset.tab === tabName) {
-      btn.className = 'tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm';
-    } else {
-      btn.className = 'tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm';
-    }
+    btn.className = btn.dataset.tab === tabName
+      ? 'tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm'
+      : 'tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm';
+  });
+  document.querySelectorAll('.btab-btn').forEach(btn => {
+    btn.className = btn.dataset.tab === tabName
+      ? 'btab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm'
+      : 'btab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm';
   });
 }
 </script>
