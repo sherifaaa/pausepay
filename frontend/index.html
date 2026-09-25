@@ -15,7 +15,6 @@
 </head>
 <body class="bg-white text-slate-800">
 
-<!-- NAVIGATION -->
 <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur border-b border-slate-200">
   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
     <a href="#" class="flex items-center gap-2">
@@ -37,7 +36,6 @@
   </div>
 </nav>
 
-<!-- HERO -->
 <section class="gradient-hero text-white">
   <div class="max-w-7xl mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
     <div>
@@ -90,7 +88,6 @@
   </div>
 </section>
 
-<!-- PRIVACY SECTION -->
 <section id="privacy" class="py-20 md:py-24 bg-slate-900 text-white">
   <div class="max-w-5xl mx-auto px-6">
     <div class="text-center mb-14">
@@ -139,7 +136,6 @@
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
 <section id="how" class="py-20 md:py-28 bg-white">
   <div class="max-w-7xl mx-auto px-6">
     <div class="text-center mb-16">
@@ -172,26 +168,21 @@
   </div>
 </section>
 
-<!-- APP SECTION -->
 <section id="app" class="py-20 md:py-28 bg-slate-50">
   <div class="max-w-4xl mx-auto px-6">
     <div class="text-center mb-10">
       <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Try it now</h2>
       <p class="text-lg text-slate-600 mb-6">Connect your bank and see your subscriptions in 60 seconds.</p>
-
-      <!-- MODE TOGGLE -->
       <div class="inline-flex bg-white border border-slate-200 rounded-full p-1 shadow-sm">
         <button id="modeConsumerBtn" onclick="setMode('consumer')" class="mode-btn px-5 py-2 rounded-full font-semibold text-sm bg-indigo-600 text-white">For Individuals</button>
         <button id="modeBusinessBtn" onclick="setMode('business')" class="mode-btn px-5 py-2 rounded-full font-semibold text-sm text-slate-600">For Business</button>
       </div>
     </div>
 
-    <!-- STATUS -->
     <div id="status" class="text-center text-slate-600 bg-white border border-slate-200 p-4 rounded-xl mb-6">
       Click "Connect Bank" to start. We'll never see your password.
     </div>
 
-    <!-- BUTTONS -->
     <div class="flex flex-wrap gap-3 justify-center mb-8">
       <button onclick="connectBank()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition">
         🔗 Connect Bank
@@ -204,7 +195,6 @@
       </button>
     </div>
 
-    <!-- CONSUMER TABS -->
     <div id="consumerTabs" class="hidden flex flex-wrap gap-2 justify-center mb-6">
       <button onclick="showTab('subscriptions')" class="tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm" data-tab="subscriptions">📋 Subscriptions</button>
       <button onclick="showTab('analytics')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="analytics">📊 Analytics</button>
@@ -213,21 +203,18 @@
       <button onclick="showTab('negotiate')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="negotiate">💰 Negotiate</button>
     </div>
 
-    <!-- BUSINESS TABS -->
     <div id="businessTabs" class="hidden flex flex-wrap gap-2 justify-center mb-6">
       <button onclick="showTab('btools')" class="btab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm" data-tab="btools">💼 All Tools</button>
       <button onclick="showTab('bduplicates')" class="btab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="bduplicates">🔍 Duplicates</button>
       <button onclick="showTab('brecovery')" class="btab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="brecovery">💰 Cost Recovery</button>
     </div>
 
-    <!-- SAVINGS BANNER -->
     <div id="savingsBanner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-6 text-center">
       <p class="text-emerald-700 font-semibold text-sm" id="savingsLabel">YOU'RE SPENDING</p>
       <p class="text-4xl font-extrabold text-emerald-600 my-1" id="totalMonthly">$0.00</p>
       <p class="text-emerald-600 text-sm" id="savingsSub">per month on <span id="subCount">0</span> subscriptions</p>
     </div>
 
-    <!-- CONSUMER: SUBSCRIPTIONS -->
     <div id="tab-subscriptions" class="tab-content">
       <div id="results" class="hidden bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
         <div class="bg-slate-50 px-6 py-4 border-b border-slate-200">
@@ -237,7 +224,6 @@
       </div>
     </div>
 
-    <!-- CONSUMER: ANALYTICS -->
     <div id="tab-analytics" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
         <h2 class="font-bold text-slate-800 text-xl mb-4">📊 Spending Analytics</h2>
@@ -245,7 +231,6 @@
       </div>
     </div>
 
-    <!-- CONSUMER: DISPUTES -->
     <div id="tab-disputes" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
         <h2 class="font-bold text-slate-800 text-xl mb-4">⚠️ Dispute a Charge</h2>
@@ -265,7 +250,6 @@
       </div>
     </div>
 
-    <!-- CONSUMER: OFFERS -->
     <div id="tab-offers" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
         <h2 class="font-bold text-slate-800 text-xl mb-4">🎁 Exclusive Offers</h2>
@@ -274,7 +258,6 @@
       </div>
     </div>
 
-    <!-- CONSUMER: NEGOTIATE -->
     <div id="tab-negotiate" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
         <h2 class="font-bold text-slate-800 text-xl mb-4">💰 Negotiate Your Bills</h2>
@@ -294,7 +277,6 @@
       </div>
     </div>
 
-    <!-- BUSINESS: ALL TOOLS -->
     <div id="tab-btools" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
         <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
@@ -305,7 +287,6 @@
       </div>
     </div>
 
-    <!-- BUSINESS: DUPLICATES -->
     <div id="tab-bduplicates" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
         <h2 class="font-bold text-slate-800 text-xl mb-4">🔍 Duplicate Tools Detected</h2>
@@ -314,7 +295,6 @@
       </div>
     </div>
 
-    <!-- BUSINESS: COST RECOVERY -->
     <div id="tab-brecovery" class="tab-content hidden">
       <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
         <h2 class="font-bold text-slate-800 text-xl mb-4">💰 Generate Client Recovery Invoice</h2>
@@ -335,7 +315,6 @@
   </div>
 </section>
 
-<!-- PRICING -->
 <section id="pricing" class="py-20 md:py-28 bg-white">
   <div class="max-w-6xl mx-auto px-6">
     <div class="text-center mb-16">
@@ -377,7 +356,6 @@
   </div>
 </section>
 
-<!-- FAQ -->
 <section id="faq" class="py-20 md:py-28 bg-slate-50">
   <div class="max-w-3xl mx-auto px-6">
     <div class="text-center mb-16">
@@ -403,7 +381,7 @@
           Do you train AI on my data?
           <span class="text-slate-400 group-open:rotate-45 transition">+</span>
         </summary>
-        <p class="text-slate-600 mt-4 leading-relaxed">No. Your transactions are never used to train any AI model — ours or anyone else's. Unlike general AI assistants, PausePay has one narrow purpose.</p>
+        <p class="text-slate-600 mt-4 leading-relaxed">No. Your transactions are never used to train any AI model — ours or anyone else's.</p>
       </details>
       <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
         <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
@@ -430,7 +408,6 @@
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer class="bg-slate-900 text-slate-400">
   <div class="max-w-7xl mx-auto px-6 py-12">
     <div class="grid md:grid-cols-4 gap-8 mb-8">
@@ -494,10 +471,8 @@ function setMode(newMode) {
   mode = newMode;
   document.getElementById('modeConsumerBtn').className = 'mode-btn px-5 py-2 rounded-full font-semibold text-sm ' + (newMode === 'consumer' ? 'bg-indigo-600 text-white' : 'text-slate-600');
   document.getElementById('modeBusinessBtn').className = 'mode-btn px-5 py-2 rounded-full font-semibold text-sm ' + (newMode === 'business' ? 'bg-indigo-600 text-white' : 'text-slate-600');
-
   document.getElementById('consumerTabs').classList.toggle('hidden', newMode !== 'consumer');
   document.getElementById('businessTabs').classList.toggle('hidden', newMode !== 'business');
-
   document.getElementById('upgradeBtn').innerText = newMode === 'business' ? '⭐ Upgrade to Business' : '⭐ Upgrade to Premium';
 }
 
