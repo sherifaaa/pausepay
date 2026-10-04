@@ -39,9 +39,14 @@
 <section class="gradient-hero text-white">
   <div class="max-w-7xl mx-auto px-6 py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
     <div>
-      <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-400/30 rounded-full px-4 py-1.5 text-sm font-medium mb-6 text-emerald-300">
-        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-        Privacy-first. No data selling. Ever.
+      <div class="flex flex-wrap items-center gap-3 mb-6">
+        <div class="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-400/30 rounded-full px-4 py-1.5 text-sm font-medium text-emerald-300">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
+          Privacy-first. No data selling. Ever.
+        </div>
+        <div class="inline-flex items-center gap-2 bg-indigo-500/10 border border-indigo-400/30 rounded-full px-4 py-1.5 text-sm font-medium text-indigo-300">
+          ✨ 7-Day Free Trial · No charge today
+        </div>
       </div>
       <h1 class="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight mb-6">
         Stop paying for subscriptions you forgot about.
@@ -191,7 +196,7 @@
         🔄 Refresh
       </button>
       <button id="upgradeBtn" onclick="upgrade()" class="hidden bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl shadow transition">
-        ⭐ Upgrade
+        ⭐ Start Free Trial
       </button>
     </div>
 
@@ -335,7 +340,10 @@
           <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Merchant offers</li>
           <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Zero data selling. Ever.</li>
         </ul>
-        <button onclick="upgrade('consumer')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition">Get Premium</button>
+        <button onclick="upgrade('consumer')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition">
+          Start 7-Day Free Trial →
+        </button>
+        <p class="text-center text-slate-400 text-xs mt-2">$20/month after. Cancel anytime.</p>
       </div>
       <div class="bg-white rounded-2xl p-8 border-2 border-slate-200 relative">
         <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-bold px-4 py-1 rounded-full">FOR BUSINESS</div>
@@ -350,7 +358,10 @@
           <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Team dashboard</li>
           <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Priority support</li>
         </ul>
-        <button onclick="upgrade('business')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition">Get Business</button>
+        <button onclick="upgrade('business')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition">
+          Start 7-Day Free Trial →
+        </button>
+        <p class="text-center text-slate-500 text-xs mt-2">$500/month after. Cancel anytime.</p>
       </div>
     </div>
   </div>
@@ -362,6 +373,15 @@
       <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Frequently asked questions</h2>
     </div>
     <div class="space-y-4">
+      <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
+        <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
+          How does the 7-day free trial work?
+          <span class="text-slate-400 group-open:rotate-45 transition">+</span>
+        </summary>
+        <p class="text-slate-600 mt-4 leading-relaxed">
+          You get full access to PausePay Premium for 7 days — completely free. A credit card is required to start the trial so we can continue your subscription automatically after the 7 days. <strong>You will not be charged today.</strong> If you don't cancel before the trial ends, you'll be charged $20/month (or $500/month for Business). You can cancel anytime with one click.
+        </p>
+      </details>
       <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
         <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
           Is PausePay safe to use?
@@ -473,7 +493,7 @@ function setMode(newMode) {
   document.getElementById('modeBusinessBtn').className = 'mode-btn px-5 py-2 rounded-full font-semibold text-sm ' + (newMode === 'business' ? 'bg-indigo-600 text-white' : 'text-slate-600');
   document.getElementById('consumerTabs').classList.toggle('hidden', newMode !== 'consumer');
   document.getElementById('businessTabs').classList.toggle('hidden', newMode !== 'business');
-  document.getElementById('upgradeBtn').innerText = newMode === 'business' ? '⭐ Upgrade to Business' : '⭐ Upgrade to Premium';
+  document.getElementById('upgradeBtn').innerText = newMode === 'business' ? '⭐ Start Business Trial' : '⭐ Start Free Trial';
 }
 
 async function connectBank() {
@@ -717,14 +737,29 @@ async function submitNegotiation() {
 
 async function upgrade(plan) {
   const selectedPlan = plan || mode;
-  const res = await fetch('/api/create-checkout-session', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ plan: selectedPlan })
-  });
-  const data = await res.json();
-  if (data.url) window.location.href = data.url;
-  else alert('Premium coming soon! We\'ll notify you when it\'s ready.');
+
+  try {
+    const res = await fetch('/api/create-checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ plan: selectedPlan })
+    });
+    const data = await res.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      alert(
+        '🎉 PausePay Premium is launching soon!\n\n' +
+        '✅ 7-day free trial\n' +
+        '✅ $20/month after (Cancel anytime)\n' +
+        '✅ Unlimited subscriptions + Pause + Negotiation\n\n' +
+        'We\'ll notify you the moment it\'s live. In the meantime, you can still use the free dashboard above.'
+      );
+    }
+  } catch (err) {
+    alert('Network error. Please try again.');
+  }
 }
 
 function showTab(tabName) {
