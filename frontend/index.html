@@ -27,7 +27,6 @@
       <a href="#privacy" class="hover:text-indigo-600 transition">Privacy</a>
       <a href="#how" class="hover:text-indigo-600 transition">How It Works</a>
       <a href="#pricing" class="hover:text-indigo-600 transition">Pricing</a>
-      <a href="#business" class="hover:text-indigo-600 transition">For Business</a>
       <a href="#faq" class="hover:text-indigo-600 transition">FAQ</a>
     </div>
     <button onclick="scrollToApp()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm px-5 py-2.5 rounded-lg transition shadow-sm">
@@ -178,10 +177,6 @@
     <div class="text-center mb-10">
       <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Try it now</h2>
       <p class="text-lg text-slate-600 mb-6">Connect your bank and see your subscriptions in 60 seconds.</p>
-      <div class="inline-flex bg-white border border-slate-200 rounded-full p-1 shadow-sm">
-        <button id="modeConsumerBtn" onclick="setMode('consumer')" class="mode-btn px-5 py-2 rounded-full font-semibold text-sm bg-indigo-600 text-white">For Individuals</button>
-        <button id="modeBusinessBtn" onclick="setMode('business')" class="mode-btn px-5 py-2 rounded-full font-semibold text-sm text-slate-600">For Business</button>
-      </div>
     </div>
 
     <div id="status" class="text-center text-slate-600 bg-white border border-slate-200 p-4 rounded-xl mb-6">
@@ -206,12 +201,6 @@
       <button onclick="showTab('disputes')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="disputes">⚠️ Disputes</button>
       <button onclick="showTab('offers')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="offers">🎁 Offers</button>
       <button onclick="showTab('negotiate')" class="tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="negotiate">💰 Negotiate</button>
-    </div>
-
-    <div id="businessTabs" class="hidden flex flex-wrap gap-2 justify-center mb-6">
-      <button onclick="showTab('btools')" class="btab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm" data-tab="btools">💼 All Tools</button>
-      <button onclick="showTab('bduplicates')" class="btab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="bduplicates">🔍 Duplicates</button>
-      <button onclick="showTab('brecovery')" class="btab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm" data-tab="brecovery">💰 Cost Recovery</button>
     </div>
 
     <div id="savingsBanner" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-6 mb-6 text-center">
@@ -282,37 +271,6 @@
       </div>
     </div>
 
-    <div id="tab-btools" class="tab-content hidden">
-      <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-slate-200">
-        <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex justify-between items-center">
-          <h2 class="font-bold text-slate-800">Company Recurring Tools</h2>
-          <span id="btoolCount" class="bg-indigo-100 text-indigo-700 text-xs font-bold px-3 py-1 rounded-full">0</span>
-        </div>
-        <ul id="btoolList" class="divide-y divide-slate-100"></ul>
-      </div>
-    </div>
-
-    <div id="tab-bduplicates" class="tab-content hidden">
-      <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
-        <h2 class="font-bold text-slate-800 text-xl mb-4">🔍 Duplicate Tools Detected</h2>
-        <p class="text-slate-600 text-sm mb-4">These tools serve the same function. Keeping one and canceling the rest is immediate savings.</p>
-        <div id="duplicateList" class="space-y-3"></div>
-      </div>
-    </div>
-
-    <div id="tab-brecovery" class="tab-content hidden">
-      <div class="bg-white rounded-2xl shadow-xl p-6 border border-slate-200">
-        <h2 class="font-bold text-slate-800 text-xl mb-4">💰 Generate Client Recovery Invoice</h2>
-        <p class="text-slate-600 text-sm mb-4">Rebill recovered software costs directly to your client.</p>
-        <div class="space-y-4">
-          <input id="recoveryClient" placeholder="Client name (e.g., Acme Corp)" class="w-full border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-indigo-500 outline-none">
-          <div id="recoveryItems" class="bg-slate-50 rounded-xl p-3 text-sm text-slate-500">Select tools from the "All Tools" tab to add them here.</div>
-          <button onclick="generateInvoice()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-xl w-full transition">Generate Invoice</button>
-        </div>
-        <div id="invoiceResult" class="mt-4"></div>
-      </div>
-    </div>
-
     <p class="text-center text-slate-400 text-xs mt-8 flex items-center justify-center gap-2">
       <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
       Secured by Plaid. Read-only. We never see your password.
@@ -326,9 +284,9 @@
       <h2 class="text-3xl md:text-5xl font-extrabold text-slate-900 mb-4">Simple, honest pricing</h2>
       <p class="text-lg text-slate-600">One price. No upsells. No data selling.</p>
     </div>
-    <div class="grid md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+    <div class="max-w-md mx-auto">
       <div class="bg-slate-900 rounded-2xl p-8 border-2 border-indigo-600 relative">
-        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-bold px-4 py-1 rounded-full">FOR INDIVIDUALS</div>
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs font-bold px-4 py-1 rounded-full">MOST POPULAR</div>
         <h3 class="text-2xl font-bold text-white mb-2">Premium</h3>
         <p class="text-slate-400 mb-6">Everything you need to stop wasting money</p>
         <div class="text-5xl font-extrabold text-white mb-6">$20<span class="text-lg text-slate-400 font-medium">/mo</span></div>
@@ -340,28 +298,10 @@
           <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Merchant offers</li>
           <li class="flex items-start gap-2"><span class="text-emerald-400 font-bold">✓</span> Zero data selling. Ever.</li>
         </ul>
-        <button onclick="upgrade('consumer')" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition">
+        <button onclick="upgrade()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl transition">
           Start 7-Day Free Trial →
         </button>
         <p class="text-center text-slate-400 text-xs mt-2">$20/month after. Cancel anytime.</p>
-      </div>
-      <div class="bg-white rounded-2xl p-8 border-2 border-slate-200 relative">
-        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-slate-900 text-white text-xs font-bold px-4 py-1 rounded-full">FOR BUSINESS</div>
-        <h3 class="text-2xl font-bold text-slate-900 mb-2">Business</h3>
-        <p class="text-slate-600 mb-6">Cost recovery + duplicate detection</p>
-        <div class="text-5xl font-extrabold text-slate-900 mb-6">$500<span class="text-lg text-slate-500 font-medium">/mo</span></div>
-        <ul class="space-y-3 mb-8 text-slate-700">
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Connect unlimited corporate cards</li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Duplicate tool detection</li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Automated cost recovery invoices</li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Client rebilling workflow</li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Team dashboard</li>
-          <li class="flex items-start gap-2"><span class="text-emerald-500 font-bold">✓</span> Priority support</li>
-        </ul>
-        <button onclick="upgrade('business')" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 rounded-xl transition">
-          Start 7-Day Free Trial →
-        </button>
-        <p class="text-center text-slate-500 text-xs mt-2">$500/month after. Cancel anytime.</p>
       </div>
     </div>
   </div>
@@ -379,7 +319,7 @@
           <span class="text-slate-400 group-open:rotate-45 transition">+</span>
         </summary>
         <p class="text-slate-600 mt-4 leading-relaxed">
-          You get full access to PausePay Premium for 7 days — completely free. A credit card is required to start the trial so we can continue your subscription automatically after the 7 days. <strong>You will not be charged today.</strong> If you don't cancel before the trial ends, you'll be charged $20/month (or $500/month for Business). You can cancel anytime with one click.
+          You get full access to PausePay Premium for 7 days — completely free. A credit card is required to start the trial so we can continue your subscription automatically after the 7 days. <strong>You will not be charged today.</strong> If you don't cancel before the trial ends, you'll be charged $20/month. You can cancel anytime with one click.
         </p>
       </details>
       <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
@@ -409,13 +349,6 @@
           <span class="text-slate-400 group-open:rotate-45 transition">+</span>
         </summary>
         <p class="text-slate-600 mt-4 leading-relaxed">No. We have read-only access. We can see your transactions, but we cannot move, withdraw, or transfer any funds.</p>
-      </details>
-      <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
-        <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
-          How does the business product work?
-          <span class="text-slate-400 group-open:rotate-45 transition">+</span>
-        </summary>
-        <p class="text-slate-600 mt-4 leading-relaxed">Businesses connect corporate cards. PausePay detects every recurring tool subscription, flags duplicates, and generates cost recovery invoices you can rebill to clients. Companies recover $12,000–$50,000 per year in wasted software spend.</p>
       </details>
       <details class="bg-white rounded-xl p-6 border border-slate-200 cursor-pointer group">
         <summary class="font-bold text-slate-900 list-none flex justify-between items-center">
@@ -477,23 +410,10 @@
 
 <script>
 let subscriptions = [];
-let businessSubscriptions = [];
-let duplicates = [];
-let recoveryItems = [];
-let mode = 'consumer';
 let connected = false;
 
 function scrollToApp() {
   document.getElementById('app').scrollIntoView({ behavior: 'smooth' });
-}
-
-function setMode(newMode) {
-  mode = newMode;
-  document.getElementById('modeConsumerBtn').className = 'mode-btn px-5 py-2 rounded-full font-semibold text-sm ' + (newMode === 'consumer' ? 'bg-indigo-600 text-white' : 'text-slate-600');
-  document.getElementById('modeBusinessBtn').className = 'mode-btn px-5 py-2 rounded-full font-semibold text-sm ' + (newMode === 'business' ? 'bg-indigo-600 text-white' : 'text-slate-600');
-  document.getElementById('consumerTabs').classList.toggle('hidden', newMode !== 'consumer');
-  document.getElementById('businessTabs').classList.toggle('hidden', newMode !== 'business');
-  document.getElementById('upgradeBtn').innerText = newMode === 'business' ? '⭐ Start Business Trial' : '⭐ Start Free Trial';
 }
 
 async function connectBank() {
@@ -528,55 +448,6 @@ async function connectBank() {
 
 async function refreshData() {
   document.getElementById('status').innerText = 'Scanning 90 days of transactions...';
-
-  if (mode === 'business') {
-    const res = await fetch('/api/b2b/scan', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: 'user-1' })
-    });
-    const data = await res.json();
-    if (data.error) { alert(data.error); return; }
-
-    businessSubscriptions = data.subscriptions || [];
-    duplicates = data.duplicates || [];
-
-    document.getElementById('savingsLabel').innerText = 'RECOVERABLE SPEND';
-    document.getElementById('totalMonthly').innerText = '$' + (data.recoverable_monthly || 0).toFixed(2);
-    document.getElementById('savingsSub').innerHTML = 'per month in duplicates and wasted tools';
-    document.getElementById('savingsBanner').classList.remove('hidden');
-
-    document.getElementById('btoolCount').innerText = businessSubscriptions.length;
-    let html = '';
-    businessSubscriptions.forEach((s, i) => {
-      html += `<li class="px-6 py-4 flex flex-wrap justify-between items-center gap-3 hover:bg-slate-50">
-        <div class="flex-1 min-w-[200px]">
-          <p class="font-bold text-slate-800">${s.merchant} ${s.isDuplicate ? '<span class="text-xs bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded-full ml-2">DUPLICATE</span>' : ''}</p>
-          <p class="text-sm text-slate-500">$${s.amount.toFixed(2)}/mo · ${s.toolCategory || 'Uncategorized'} · ${s.occurrences} charges</p>
-        </div>
-        <button onclick="addToRecovery(${i})" class="bg-emerald-100 hover:bg-emerald-200 text-emerald-700 font-semibold px-4 py-2 rounded-full text-sm transition">+ Recover</button>
-      </li>`;
-    });
-    document.getElementById('btoolList').innerHTML = html;
-
-    let dhtml = '';
-    if (duplicates.length === 0) {
-      dhtml = '<p class="text-slate-500 text-sm">No duplicate tools detected. Nice work.</p>';
-    } else {
-      duplicates.forEach(d => {
-        dhtml += `<div class="border border-red-200 bg-red-50 rounded-xl p-4">
-          <p class="font-bold text-red-800">${d.category}</p>
-          <p class="text-sm text-red-600 mt-1">Overlapping tools: ${d.tools.join(', ')}</p>
-          <p class="text-sm font-bold text-red-700 mt-2">Wasted: $${d.monthlyWaste.toFixed(2)}/month ($${(d.monthlyWaste * 12).toFixed(2)}/year)</p>
-        </div>`;
-      });
-    }
-    document.getElementById('duplicateList').innerHTML = dhtml;
-    document.getElementById('status').innerText = `Found ${businessSubscriptions.length} tools · ${duplicates.length} duplicates`;
-
-    showTab('btools');
-    return;
-  }
 
   const res = await fetch('/api/transactions', {
     method: 'POST',
@@ -623,39 +494,6 @@ async function refreshData() {
 
   await loadOffers();
   showTab('subscriptions');
-}
-
-function addToRecovery(index) {
-  const s = businessSubscriptions[index];
-  if (!s) return;
-  if (recoveryItems.some(i => i.merchant === s.merchant)) {
-    alert('Already added to recovery.');
-    return;
-  }
-  recoveryItems.push({ merchant: s.merchant, amount: s.amount });
-  const itemsDiv = document.getElementById('recoveryItems');
-  itemsDiv.innerHTML = recoveryItems.map(i => `<div class="flex justify-between py-1"><span>${i.merchant}</span><span class="font-bold">$${i.amount.toFixed(2)}/mo</span></div>`).join('');
-  alert(`Added ${s.merchant} to recovery invoice.`);
-}
-
-async function generateInvoice() {
-  const clientName = document.getElementById('recoveryClient').value.trim();
-  if (!clientName) { alert('Enter a client name.'); return; }
-  if (recoveryItems.length === 0) { alert('Add at least one tool from the All Tools tab.'); return; }
-
-  const res = await fetch('/api/b2b/recovery', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ clientName, items: recoveryItems, userId: 'user-1' })
-  });
-  const data = await res.json();
-  if (data.success) {
-    document.getElementById('invoiceResult').innerHTML = `
-      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-4">
-        <p class="font-bold text-emerald-700">✅ Invoice created for ${clientName}</p>
-        <p class="text-sm text-emerald-600">Total: $${data.invoice.total.toFixed(2)}/month · Status: Draft</p>
-      </div>`;
-  }
 }
 
 async function pauseSubscription(merchant) {
@@ -735,14 +573,12 @@ async function submitNegotiation() {
   }
 }
 
-async function upgrade(plan) {
-  const selectedPlan = plan || mode;
-
+async function upgrade() {
   try {
     const res = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ plan: selectedPlan })
+      body: JSON.stringify({ plan: 'consumer' })
     });
     const data = await res.json();
 
@@ -771,11 +607,6 @@ function showTab(tabName) {
     btn.className = btn.dataset.tab === tabName
       ? 'tab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm'
       : 'tab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm';
-  });
-  document.querySelectorAll('.btab-btn').forEach(btn => {
-    btn.className = btn.dataset.tab === tabName
-      ? 'btab-btn bg-indigo-600 text-white px-5 py-2 rounded-full font-semibold text-sm'
-      : 'btab-btn bg-slate-200 text-slate-700 px-5 py-2 rounded-full font-semibold text-sm';
   });
 }
 </script>
